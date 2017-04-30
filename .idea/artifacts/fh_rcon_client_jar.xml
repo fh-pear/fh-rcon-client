@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="fh-rcon-client:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/fh_rcon_client_jar</output-path>
+    <root id="archive" name="fh-rcon-client.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="fh-rcon-client" />
+      <element id="directory" name="resources">
+        <element id="dir-copy" path="$PROJECT_DIR$/resources" />
+      </element>
+    </root>
+  </artifact>
+</component>

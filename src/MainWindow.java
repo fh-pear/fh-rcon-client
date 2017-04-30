@@ -203,7 +203,7 @@ public class MainWindow
          //System.out.println(mapFile.getAbsolutePath());
          map = ImageIO.read(mapFile);
       				
-         mapLabel.setIcon(new ImageIcon(map.getScaledInstance(175, 150, map.SCALE_SMOOTH)));
+         mapLabel.setIcon(new ImageIcon(map.getScaledInstance(175, 150, Image.SCALE_SMOOTH)));
       	//mapLabel.setIcon(new ImageIcon(map));
       }
       catch (IOException e) {

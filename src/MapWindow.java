@@ -55,7 +55,7 @@ public class MapWindow
          //System.out.println(mapFile.getAbsolutePath());
          map = ImageIO.read(mapFile);
       				
-         mapLabel.setIcon(new ImageIcon(map.getScaledInstance(400, 225, map.SCALE_SMOOTH)));
+         mapLabel.setIcon(new ImageIcon(map.getScaledInstance(400, 225, Image.SCALE_SMOOTH)));
       
       }
       catch (IOException e) {

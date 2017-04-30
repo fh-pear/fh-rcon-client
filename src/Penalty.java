@@ -56,10 +56,7 @@ public class Penalty
 			inactive = true;
 		else // inactive is false, but check expire time too!
 		{
-			if (penaltyExpire < 0 || penaltyExpire > time)
-				inactive = false;
-			else 
-				inactive = true;		
+			inactive = !(penaltyExpire < 0 || penaltyExpire > time);
 		}
 	}
 	

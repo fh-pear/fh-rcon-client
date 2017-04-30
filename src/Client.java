@@ -193,9 +193,7 @@ public class Client
 	 */
    public boolean equals(Client c)
    {
-      if ( guid.equals(c.getGuid()) && exactName.equals(c.getExactName()) && cid.equals(c.getClientId()) )
-         return true;
-   	
-      return false;
+	   return guid.equals(c.getGuid()) && exactName.equals(c.getExactName()) && cid.equals(c.getClientId());
+
    }
 }
