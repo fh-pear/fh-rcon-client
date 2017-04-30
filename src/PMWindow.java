@@ -1,7 +1,6 @@
 import javax.swing.*;
-import javax.swing.table.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PMWindow extends JFrame
 {
@@ -10,58 +9,58 @@ public class PMWindow extends JFrame
 	private JLabel name, guidLabel, message;
 	private JTextField nameField, guidField, messageField;
 	private JButton pm, cancel;
-	
+
 	public PMWindow(Client cl)
 	{
 		c = cl;
-		
+
 		frame = new JFrame("Private Message Client: " + c.getName());
 		frame.setLayout(null);
-      frame.setSize(400, 250);
+		frame.setSize(400, 250);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+
 		init();
 		addListeners();
 		pack();
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 
-      frame.setVisible(true);    
+		frame.setVisible(true);
 	}
-	
+
 	public void init()
 	{
 		//double width = frame.getWidth() - 20;
 		name = new JLabel("Name: ");
 		name.setBounds(10, 10, 60, 25);
-		
+
 		nameField = new JTextField(c.getName());
 		nameField.setBackground(null);
 		nameField.setBorder(null);
 		nameField.setEditable(false);
 		nameField.setBounds(80, 10, 270, 25);
-		
+
 		guidLabel = new JLabel("GUID: ");
 		guidLabel.setBounds(10, 45, 60, 25);
-		
+
 		guidField = new JTextField(c.getGuid());
 		guidField.setBackground(null);
 		guidField.setBorder(null);
 		guidField.setEditable(false);
 		guidField.setBounds(80, 45, 270, 25);
-		
+
 		message = new JLabel("Message: ");
 		message.setBounds(10, 100, 65, 25);
-		
+
 		messageField = new JTextField();
 		messageField.setBounds(80, 100, 270, 25);
-		
+
 		pm = new JButton("Send");
 		pm.setBounds(100, 150, 200, 25);
-		
+
 		cancel = new JButton("Cancel");
 		cancel.setBounds(100, 185, 200, 25);
-									
+
 		frame.add(name);
 		frame.add(nameField);
 		frame.add(guidLabel);
@@ -71,31 +70,30 @@ public class PMWindow extends JFrame
 		frame.add(pm);
 		frame.add(cancel);
 	}
-	
+
 	public void addListeners()
 	{
 		pm.addActionListener(new PMListener());
 		cancel.addActionListener(new PMListener());
 	}
-	
+
 	private class PMListener implements ActionListener
-	{	
+	{
 		public void actionPerformed(ActionEvent e)
 		{
 			if (e.getSource() == pm)
 			{
-				
+
 				if (messageField.getText().length() < 1)
 				{
 					JOptionPane.showMessageDialog(null, "You must supply a message!", "ERROR: No Message", JOptionPane.ERROR_MESSAGE);
-				}
-				else
+				} else
 				{
 					JOptionPane.showMessageDialog(null, NetProtocol.pm(c.getClientId(), c.getShortGuid(), messageField.getText()));
 					frame.dispose();
 				}
 			}
-			
+
 			if (e.getSource() == cancel)
 			{
 				frame.dispose();
