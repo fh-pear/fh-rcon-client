@@ -124,7 +124,7 @@ public class Penalty
 			penaltyExpire = Long.parseLong(str);
 		} catch (NumberFormatException e)
 		{
-			//should do some logging here
+			logger.log(Level.WARNING, e.getMessage(), e);
 		}
 	}
 
@@ -142,6 +142,7 @@ public class Penalty
 			unixSeconds = Long.parseLong(unixTime);
 		} catch (NumberFormatException e)
 		{
+			logger.log(Level.WARNING, "Error parsing date:" + e.getMessage(), e);
 			return "DATE PARSE ERROR";
 		}
 

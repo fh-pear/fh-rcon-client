@@ -79,8 +79,6 @@ public class PlayerDetails
 		else
 			str = "none\n";
 
-		//JOptionPane.showMessageDialog(null, str);
-		//System.out.println(str);
 
 		if (str.equals("none\n"))
 		{
@@ -103,11 +101,8 @@ public class PlayerDetails
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-
-		//DefaultTableModel model = (DefaultTableModel) table.getModel()
 		dtm = new AliasTableModel();
 
-		//JOptionPane.showMessageDialog(null, NetProtocol.getStatus());
 		table.setModel(dtm);
 		table.setRowHeight(25);
 
@@ -142,8 +137,6 @@ public class PlayerDetails
 		else
 			str = "none\n";
 
-		//JOptionPane.showMessageDialog(null, str);
-		//System.out.println(str);
 
 		if (str.equals("none\n"))
 		{
@@ -168,10 +161,8 @@ public class PlayerDetails
 		//table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
 
-		//DefaultTableModel model = (DefaultTableModel) table.getModel()
 		dtm1 = new PenaltyTableModel();
 
-		//JOptionPane.showMessageDialog(null, NetProtocol.getStatus());
 		table.setModel(dtm1);
 		table.setRowHeight(25);
 

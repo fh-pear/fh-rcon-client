@@ -30,7 +30,6 @@ public class PMWindow extends JFrame
 
 	public void init()
 	{
-		//double width = frame.getWidth() - 20;
 		name = new JLabel("Name: ");
 		name.setBounds(10, 10, 60, 25);
 
