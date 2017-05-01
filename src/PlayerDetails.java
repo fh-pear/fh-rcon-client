@@ -5,15 +5,15 @@ import java.util.Date;
 
 public class PlayerDetails
 {
-	Client c;
-	JLabel dataid, aliasNone, penaltyNone;
-	JFrame frame;
-	JPanel topPanel, aliasPanel, penaltiesPanel;
-	JTable table;
-	AliasTableModel dtm;
-	PenaltyTableModel dtm1;
+	private Client c;
+	private JLabel dataid, aliasNone, penaltyNone;
+	private JFrame frame;
+	private JPanel topPanel, aliasPanel, penaltiesPanel;
+	private JTable table;
+	private AliasTableModel dtm;
+	private PenaltyTableModel dtm1;
 
-	String databaseId;
+	private String databaseId;
 
 	public PlayerDetails(Client cl)
 	{

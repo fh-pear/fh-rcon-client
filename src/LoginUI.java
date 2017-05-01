@@ -3,19 +3,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginUI extends JFrame
 {
-	JFrame frame;
-	JButton loginButton;
-	JPasswordField passwordText;
-	JTextField userText;
-	JComboBox<String> serverSelect;
-	ImageIcon img;
+	private JFrame frame;
+	private JButton loginButton;
+	private JPasswordField passwordText;
+	private JTextField userText;
+	private JComboBox<String> serverSelect;
+	private ImageIcon img;
 
-	Logger logger = Logger.getLogger(LoginUI.class.getName());
+	private Logger logger = Logger.getLogger(LoginUI.class.getName());
 
 	public LoginUI()
 	{
