@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class KickWindow extends JFrame
 {
@@ -92,7 +92,7 @@ public class KickWindow extends JFrame
 
 				if (reasonField.getText().length() < 2)
 				{
-					logger.log(Level.INFO, "Attempt to kick " + c.getName() + " without a reason");
+					logger.log(Level.INFO, "Attempt to kick " + c.getName() + ":" + c.getShortGuid() + " without a reason");
 					JOptionPane.showMessageDialog(null, "You must supply a reason!", "ERROR: No Reason", JOptionPane.ERROR_MESSAGE);
 				} else
 				{

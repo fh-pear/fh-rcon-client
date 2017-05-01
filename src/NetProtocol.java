@@ -6,6 +6,9 @@ import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public final class NetProtocol
 {
@@ -27,6 +30,8 @@ public final class NetProtocol
 	private static ArrayList<Client> clients = new ArrayList<Client>();
 	private static ArrayList<Client> clientBuffer = new ArrayList<Client>();
 
+	private static Logger logger = Logger.getLogger(NetProtocol.class.getName());
+
 	public static String map = "";
 
 
@@ -45,7 +50,7 @@ public final class NetProtocol
 		else // wtf? this shouldn't happen... but i know me. put this here anyways
 			serverPort = FFA;
 
-		//System.out.println("Initalizing with port number: " + serverPort);
+		logger.log(Level.INFO, "Initalizing connection using port number: " + serverPort);
 
 		try
 		{
@@ -55,12 +60,12 @@ public final class NetProtocol
 			out = new PrintWriter(socket.getOutputStream(), true);
 		} catch (UnknownHostException e)
 		{
+			logger.log(Level.WARNING, e.getMessage(), e);
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		} catch (IOException e)
 		{
+			logger.log(Level.WARNING, "Could not connect to the server: " + e.getMessage(), e);
 			JOptionPane.showMessageDialog(null, "Could not connect to the server: " + e.getMessage());
-			//JOptionPane.showMessageDialog(null, "Closing program now...");
-			//System.exit(0);
 		}
 
 	}
@@ -81,7 +86,7 @@ public final class NetProtocol
 		String inputLine;
 		String result = "";
 
-		System.out.println("sending - " + command);
+		logger.log(Level.INFO, "sending - " + command);
 		try
 		{
 			out.println(command);
@@ -90,7 +95,7 @@ public final class NetProtocol
 			{
 				if (inputLine.equals(""))
 				{
-					//System.out.println("breaking, input: " + inputLine);
+					logger.log(Level.FINEST, "breaking, input: " + inputLine);
 					continue;
 				}
 
@@ -99,13 +104,15 @@ public final class NetProtocol
 
 		} catch (IOException e)
 		{
+			logger.log(Level.WARNING, e.getMessage(), e);
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		} catch (InterruptedException e)
 		{
+			logger.log(Level.WARNING, e.getMessage(), e);
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 
-		System.out.println("RECEIVED: " + result);
+		logger.log(Level.INFO, "RECEIVED: " + result);
 		return result;
 	}
 
@@ -183,7 +190,6 @@ public final class NetProtocol
 	{
 		map = send("getmap");
 		map = map.replace("\n", "");
-		//System.out.println(map + ".jpg");
 	}
 
 	public static ArrayList<Client> getStatus()
@@ -195,33 +201,25 @@ public final class NetProtocol
 		try
 		{
 			out.println("status");
-			Thread.sleep(10);
+
 			while (!(inputLine = in.readLine()).equals("..."))
 			{
 				if (inputLine.equals(""))
 				{
-					//System.out.println("breaking, input: " + inputLine);
+					logger.log(Level.FINEST, "breaking, input: " + inputLine);
 					continue;
 				}
-				//System.out.println("adding client: " + inputLine);
+				logger.log(Level.FINEST, "adding client: " + inputLine);
 				clients.add(new Client(inputLine));
 			}
 
-			//clients.clear();
-			//clients = new ArrayList<Client>(clientBuffer);
-			//Thread.sleep(20);
-			//clientBuffer.clear();
 		} catch (IOException e)
 		{
-			JOptionPane.showMessageDialog(null, e.getMessage());
-		} catch (InterruptedException e)
-		{
+			logger.log(Level.WARNING, e.getMessage(), e);
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
-		//System.out.println(clients.get(0).toString(true));
-		//return input;
 
-		return new ArrayList<Client>(clients);
+		return clients;
 	}
 
 	public static void clear()
@@ -241,7 +239,6 @@ public final class NetProtocol
 
 			System.gc();
 
-			Thread.sleep(50);
 		} catch (IOException e)
 		{
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -249,9 +246,6 @@ public final class NetProtocol
 		{
 			// nothing has been initalized yet, this is fine. we don't really care about that
 			// will happen on the first initalization call
-		} catch (InterruptedException e)
-		{
-
 		}
 
 	}
@@ -281,7 +275,7 @@ public final class NetProtocol
 
 			System.out.println(hashtext);
 			out.println(user + UNIT_SEPARATOR + password);
-			//System.out.println(password);
+			logger.log(Level.FINEST, "Password hash: " + password);
 
 			String inputLine, input = "";
 			while (!(inputLine = in.readLine()).equals("..."))
@@ -289,9 +283,9 @@ public final class NetProtocol
 				if (inputLine.equals(""))
 					continue;
 				input += inputLine;
-				//System.out.println(inputLine);
 			}
-			//System.out.println(input);
+			logger.log(Level.FINER, input);
+
 			//Logged in. Waiting for command(s)
 			if (input.equals("Verify version"))
 			{
@@ -309,10 +303,10 @@ public final class NetProtocol
 				if (inputV.equals("Logged in. Waiting for command(s)."))
 				{
 					loggedIn = true;
-					//System.out.println("logged in: " + loggedIn);
 				} else
 				{
 					clear();
+					logger.log(Level.SEVERE, "Version mismatch, throwing VersionError");
 					throw new VersionError(inputV);
 				}
 			} else if (input.equals("exit"))
@@ -326,12 +320,15 @@ public final class NetProtocol
 			}
 		} catch (UnsupportedEncodingException e)
 		{
+			logger.log(Level.SEVERE, e.getMessage(), e);
 			JOptionPane.showMessageDialog(null, "Your machine does not support UTF-8 encoding. \n\n" + e.getMessage());
 		} catch (NoSuchAlgorithmException e)
 		{
+			logger.log(Level.SEVERE, e.getMessage(), e);
 			JOptionPane.showMessageDialog(null, "Your machine does not support MD5 hashing. \n\n" + e.getMessage());
 		} catch (IOException e)
 		{
+			logger.log(Level.SEVERE, e.getMessage(), e);
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 

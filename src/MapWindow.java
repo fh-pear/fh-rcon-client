@@ -8,21 +8,25 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MapWindow
 {
-	JFrame frame;
-	JScrollPane jsp;
-	JPanel northPanel, westPanel, eastPanel, southPanel, innerSPanel1, innerSPanel2;
-	JTextField customMapField;
-	JLabel customMap, mapLabel;
-	JButton submit, cancel;
-	JList<String> mapOptions;
-	JRadioButton normal, custom;
-	ButtonGroup group;
+	private JFrame frame;
+	private JScrollPane jsp;
+	private JPanel northPanel, westPanel, eastPanel, southPanel, innerSPanel1, innerSPanel2;
+	private JTextField customMapField;
+	private JLabel customMap, mapLabel;
+	private JButton submit, cancel;
+	private JList<String> mapOptions;
+	private JRadioButton normal, custom;
+	private ButtonGroup group;
 
-	InputStream mapFile;
-	BufferedImage map;
+	private InputStream mapFile;
+	private BufferedImage map;
+
+	private Logger logger = Logger.getLogger(MapWindow.class.getName());
 
 	public MapWindow()
 	{
@@ -51,16 +55,17 @@ public class MapWindow
 	{
 		try
 		{
-			String fileLocation = "/resources/images/" + mapName + ".jpg";
-			//System.out.println(fileLocation);
+			String fileLocation = Config.getMaps() + mapName + ".jpg";
+			logger.log(Level.FINE, "Using " + fileLocation + " for mapfile image location");
 			mapFile = Config.class.getResourceAsStream(fileLocation);
-			//System.out.println(mapFile.getAbsolutePath());
+
 			map = ImageIO.read(mapFile);
 
 			mapLabel.setIcon(new ImageIcon(map.getScaledInstance(400, 225, Image.SCALE_SMOOTH)));
 
 		} catch (IOException e)
 		{
+			logger.log(Level.WARNING, "Error fetching map file: " + e.getMessage());
 			JOptionPane.showMessageDialog(null, "Error fetching map file: " + e.getMessage(), "ERROR: Couldn't fetch map File", JOptionPane.ERROR_MESSAGE);
 		}
 	}

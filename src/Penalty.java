@@ -1,12 +1,16 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Penalty
 {
 	private String banid, penaltyType, duration, reason, data, timeAdd, timeExpire;
 	private boolean inactive;
 	private long penaltyAdd, penaltyExpire, time;
+
+	private Logger logger = Logger.getLogger(Penalty.class.getName());
 
 	public Penalty(String str, long t)
 	{
@@ -26,8 +30,8 @@ public class Penalty
 		timeExpire = getDate(details[7]);
 		setPenaltyExpire(details[7]);
 
-		setInactive(details[3]); //set inactive last, so we can look at expire etc to do a full
-		//analysis to see if the penalty is active or not
+		setInactive(details[3]); /*set inactive last, so we can look at expire etc to do a full
+			analysis to see if the penalty is active or not*/
 	}
 
 	public String getBanId()
@@ -104,7 +108,7 @@ public class Penalty
 			penaltyAdd = Long.parseLong(str);
 		} catch (NumberFormatException e)
 		{
-			// log it here
+			logger.log(Level.WARNING, e.getMessage(), e);
 		}
 	}
 
