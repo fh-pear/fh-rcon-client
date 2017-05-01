@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class BanWindow extends JFrame
 {
@@ -10,6 +12,7 @@ public class BanWindow extends JFrame
 	private JLabel name, guidLabel, reason;
 	private JTextField nameField, guidField, reasonField;
 	private JButton ban, cancel;
+	private Logger logger = Logger.getLogger(BanWindow.class.getName());
 
 	public BanWindow(Client cl)
 	{
@@ -89,9 +92,11 @@ public class BanWindow extends JFrame
 
 				if (reasonField.getText().length() < 2)
 				{
+					logger.log(Level.INFO, "User tried to ban " + c.getName() + " without a reason");
 					JOptionPane.showMessageDialog(null, "You must supply a reason!", "ERROR: No Reason", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
+					logger.log(Level.INFO, "Calling NetProtocol.ban: " + c.getClientId() + " " + c.getShortGuid() + " " + reasonField.getText());
 					JOptionPane.showMessageDialog(null, NetProtocol.ban(c.getClientId(), c.getShortGuid(), reasonField.getText()));
 					frame.dispose();
 					System.gc();

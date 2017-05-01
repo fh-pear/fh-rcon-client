@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class MainWindow
 {
@@ -27,6 +29,8 @@ public class MainWindow
 	private BufferedImage map;
 	private JLabel mapLabel, currentMap;
 	private InputStream mapFile;
+
+	private Logger logger = Logger.getLogger(MainWindow.class.getName());
 
 	public MainWindow()
 	{
@@ -199,19 +203,16 @@ public class MainWindow
 	{
 		try
 		{
-			//System.out.println(NetProtocol.map);
 			String fileLocation = Config.getMaps() + NetProtocol.map + ".jpg";
-			//System.out.println(fileLocation);
-			//mapFile = new File(fileLocation);
+			logger.log(Level.INFO, "Setting location for map image: " + fileLocation);
+
 			mapFile = Config.class.getResourceAsStream(fileLocation);
-			//System.out.println(mapFile.getAbsolutePath());
 			map = ImageIO.read(mapFile);
 
 			mapLabel.setIcon(new ImageIcon(map.getScaledInstance(175, 150, Image.SCALE_SMOOTH)));
-			//mapLabel.setIcon(new ImageIcon(map));
 		} catch (IOException e)
 		{
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 			JOptionPane.showMessageDialog(null, "Error fetching map file: " + e.getMessage(), "ERROR: Couldn't fetch map File", JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -280,8 +281,6 @@ public class MainWindow
 			dtm.addClient(c.get(i));
 		}
 
-		//dtm.fireTableDataChanged();
-
 
 		action.setText("Updated player list.   " + time());
 	}
@@ -329,22 +328,18 @@ public class MainWindow
 			}
 			if (e.getSource() == playerInfo)
 			{
-				int rowi;
-				if ((rowi = table.getSelectedRow()) >= 0)
+				int rowi = table.getSelectedRow();
+				if (rowi >= 0)
 				{
 					new PlayerDetails(dtm.getClient(table.getSelectedRow()));
-
-					//JOptionPane.showMessageDialog(null, "kick " + cl.getName());
 				}
 			}
 			if (e.getSource() == pm)
 			{
-				int rowi;
-				if ((rowi = table.getSelectedRow()) >= 0)
+				int rowi = table.getSelectedRow();
+				if (rowi >= 0)
 				{
 					new PMWindow(dtm.getClient(table.getSelectedRow()));
-
-					//JOptionPane.showMessageDialog(null, "kick " + cl.getName());
 				}
 			}
 			if (e.getSource() == globalMessage)
@@ -367,34 +362,26 @@ public class MainWindow
 			}
 			if (e.getSource() == kick)
 			{
-				//JOptionPane.showMessageDialog(null, "Kick button pressed");
-				int rowi;
-				if ((rowi = table.getSelectedRow()) >= 0)
+				int rowi = table.getSelectedRow();
+				if (rowi >= 0)
 				{
 					new KickWindow(dtm.getClient(table.getSelectedRow()));
-
-					//JOptionPane.showMessageDialog(null, "kick " + cl.getName());
 				}
 			}
 			if (e.getSource() == tempban)
 			{
-				//JOptionPane.showMessageDialog(null, "Kick button pressed");
-				int rowi;
-				if ((rowi = table.getSelectedRow()) >= 0)
+				int rowi = table.getSelectedRow();
+				if (rowi >= 0)
 				{
 					new TempBanWindow(dtm.getClient(table.getSelectedRow()));
-
-					//JOptionPane.showMessageDialog(null, "kick " + cl.getName());
 				}
 			}
 			if (e.getSource() == ban)
 			{
-				int rowi;
-				if ((rowi = table.getSelectedRow()) >= 0)
+				int rowi = table.getSelectedRow();
+				if (rowi >= 0)
 				{
 					new BanWindow(dtm.getClient(table.getSelectedRow()));
-
-					//JOptionPane.showMessageDialog(null, "kick " + cl.getName());
 				}
 			}
 		}

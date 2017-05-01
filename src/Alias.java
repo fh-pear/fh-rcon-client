@@ -1,14 +1,20 @@
+import sun.util.logging.PlatformLogger;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 
 public class Alias
 {
 	private String alias, firstUsed, lastUsed;
+	private Logger logger = Logger.getLogger(Alias.class.getName());
 
 	public Alias(String str)
 	{
-		//System.out.println("alias string: " + str);
+		logger.log(Level.FINE, "alias string: " + str);
 		String[] details = str.split("\t");
 
 		alias = details[0];
@@ -25,6 +31,7 @@ public class Alias
 			unixSeconds = Long.parseLong(unixTime);
 		} catch (NumberFormatException e)
 		{
+			logger.log(Level.WARNING, e.getMessage());
 			return "DATE PARSE ERROR";
 		}
 

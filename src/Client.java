@@ -1,11 +1,15 @@
 //import java.util.List;
 //import java.util.ArrayList;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 public class Client
 {
 	private String cid, name, guid, score, dataid;
 	boolean guidValid = true; // assume true, checkGuid() will set false if otherwise
 	private String exactName = "";
+	private Logger logger = Logger.getLogger(Client.class.getName());
 
 	/**
 	 * Client object constructor.
@@ -17,7 +21,7 @@ public class Client
 	 */
 	public Client(String str)
 	{
-		//System.out.println("Client: " + str);
+		logger.log(Level.FINE, "New Client Object: " + str);
 		String[] parse = str.split("\t");
 		
 		/*for (int i = 0; i < parse.length; i++)

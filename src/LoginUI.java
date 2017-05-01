@@ -3,6 +3,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class LoginUI extends JFrame
 {
@@ -12,6 +14,8 @@ public class LoginUI extends JFrame
 	JTextField userText;
 	JComboBox<String> serverSelect;
 	ImageIcon img;
+
+	Logger logger = Logger.getLogger(LoginUI.class.getName());
 
 	public LoginUI()
 	{
@@ -105,6 +109,7 @@ public class LoginUI extends JFrame
 				}
 			} catch (VersionError e)
 			{
+				logger.log(Level.INFO, e.getMessage(), e);
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
 		}
