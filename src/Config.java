@@ -53,7 +53,7 @@ public final class Config
 
 	// some settings can be blank, and we can assign defaults
 	// others we absolutely need (ex serverHost, dbHost)
-	public static void checkValues() throws ConfigurationException
+	private static void checkValues() throws ConfigurationException
 	{
 		String message = " configuration property is required. Shutting down program...";
 		/* REQUIRED settings for the gameserver */
