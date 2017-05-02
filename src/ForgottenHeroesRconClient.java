@@ -1,13 +1,34 @@
 import javax.naming.ConfigurationException;
 import javax.swing.*;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import java.io.IOException;
+import java.util.logging.*;
+
 
 public class ForgottenHeroesRconClient
 {
 	public static void main(String[] args)
 	{
 		Logger logger = Logger.getLogger(ForgottenHeroesRconClient.class.getName());
+
+		System.setProperty("java.util.logging.SimpleFormatter.format",
+				"[%1$tc] %n%2$s %4$s: %5$s%n%n");
+
+		Handler filehandle = null;
+		Formatter format = null;
+		try
+		{
+			format = new SimpleFormatter();
+			filehandle = new FileHandler("fhrcon_debug.log");
+			filehandle.setFormatter(format);
+
+			logger.addHandler(filehandle);
+
+			logger.setLevel(Level.ALL);
+			filehandle.setLevel(Level.ALL);
+		} catch (IOException e)
+		{
+			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
+		}
 
 		try
 		{
@@ -24,6 +45,7 @@ public class ForgottenHeroesRconClient
 		{
 			logger.severe("Unexpected exception occurred reading the config file, could not recover.");
 			logger.log(Level.SEVERE, e.getMessage(), e);
+			e.printStackTrace();
 			System.exit(1);
 		}
 
@@ -36,6 +58,9 @@ public class ForgottenHeroesRconClient
 						new LoginUI();
 					}
 				});
+
+		if (filehandle != null)
+			filehandle.close();
 	}
 
 

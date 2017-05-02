@@ -7,10 +7,7 @@
       </element>
       <element id="module-output" name="fh-rcon-client" />
       <element id="directory" name="resources">
-        <element id="directory" name="jars">
-          <element id="extracted-dir" path="$PROJECT_DIR$/resources/jars/slf4j-api-1.7.25.jar" path-in-jar="/" />
-          <element id="extracted-dir" path="$PROJECT_DIR$/resources/jars/slf4j-simple-1.7.25.jar" path-in-jar="/" />
-        </element>
+        <element id="directory" name="jars" />
         <element id="directory" name="images">
           <element id="dir-copy" path="$PROJECT_DIR$/resources/images" />
         </element>

@@ -13,6 +13,7 @@ public final class Config
 	private static int serverPort;
 	private static String serverHost;
 	private static String mapImages;
+	private static int logLevel;
 
 	public static void init(String fileName) throws NumberFormatException, IOException, ConfigurationException
 	{
@@ -24,6 +25,7 @@ public final class Config
 
 		serverHost = props.getProperty("hostname");
 		mapImages = props.getProperty("map_images");
+		logLevel = Integer.parseInt(props.getProperty("log_level"));
 
 
 		checkValues();

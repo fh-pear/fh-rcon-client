@@ -38,6 +38,7 @@ public final class NetProtocol
 	public static void init(int num)
 	{
 		clear();
+		logger.log(Level.WARNING, "Log level:" + logger.getLevel());
 
 		if (num == 1)
 			serverPort = FFA;
@@ -112,7 +113,7 @@ public final class NetProtocol
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 
-		logger.log(Level.INFO, "RECEIVED: " + result);
+		logger.log(Level.FINE, "RECEIVED: " + result);
 		return result;
 	}
 
@@ -273,7 +274,6 @@ public final class NetProtocol
 
 			password = new String(hashtext);
 
-			System.out.println(hashtext);
 			out.println(user + UNIT_SEPARATOR + password);
 			logger.log(Level.FINEST, "Password hash: " + password);
 
