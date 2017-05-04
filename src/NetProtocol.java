@@ -30,7 +30,7 @@ public final class NetProtocol
 	private static ArrayList<Client> clients = new ArrayList<Client>();
 	private static ArrayList<Client> clientBuffer = new ArrayList<Client>();
 
-	private static Logger logger = Logger.getLogger(NetProtocol.class.getName());
+	private static final Logger logger = Logger.getLogger(ForgottenHeroesRconClient.class.getName());
 
 	public static String map = "";
 
@@ -38,6 +38,9 @@ public final class NetProtocol
 	public static void init(int num)
 	{
 		clear();
+		//logger.setLevel(Config.getLoggingLevel());
+		logger.setUseParentHandlers(false);
+
 		logger.log(Level.WARNING, "Log level:" + logger.getLevel());
 
 		if (num == 1)
@@ -82,7 +85,7 @@ public final class NetProtocol
 		return clients;
 	}
 
-	public static String send(String command)
+	private static String send(String command)
 	{
 		String inputLine;
 		String result = "";
