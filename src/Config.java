@@ -14,6 +14,8 @@ public final class Config
 	private static int serverPort;
 	private static String serverHost;
 	private static String mapImages;
+
+	// logging variables
 	private static String logFormat;
 	private static Level logLevel;
 
@@ -81,8 +83,14 @@ public final class Config
 		return mapImages;
 	}
 
-	public static Level getLoggingLevel() { return logLevel; }
+	public static Level getLoggingLevel()
+	{
+		return logLevel;
+	}
 
-	public static String getLoggingFormat() { return logFormat; }
+	public static String getLoggingFormat()
+	{
+		return logFormat;
+	}
 
 }
