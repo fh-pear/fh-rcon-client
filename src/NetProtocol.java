@@ -6,8 +6,7 @@ import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 
 public final class NetProtocol
@@ -29,19 +28,42 @@ public final class NetProtocol
 	private static boolean loggedIn = false;
 	private static ArrayList<Client> clients = new ArrayList<Client>();
 	private static ArrayList<Client> clientBuffer = new ArrayList<Client>();
-
-	private static final Logger logger = Logger.getLogger(ForgottenHeroesRconClient.class.getName());
+	private static Logger logger = null;
 
 	public static String map = "";
 
-
 	public static void init(int num)
 	{
-		clear();
-		//logger.setLevel(Config.getLoggingLevel());
-		logger.setUseParentHandlers(false);
+		if (logger == null)
+		{
+			logger = Logger.getLogger(NetProtocol.class.getName());
 
-		logger.log(Level.WARNING, "Log level:" + logger.getLevel());
+			try
+			{
+				SimpleFormatter sf = new SimpleFormatter();
+
+				Handler filehandle = new FileHandler("fhrcon_debug.log", true);
+				filehandle.setFormatter(sf);
+				Handler consolehandle = new ConsoleHandler();
+				consolehandle.setFormatter(sf);
+
+				filehandle.setLevel(Config.getLoggingLevel());
+				consolehandle.setLevel(Config.getLoggingLevel());
+
+				logger.addHandler(filehandle);
+				logger.addHandler(consolehandle);
+
+
+				logger.setLevel(Config.getLoggingLevel());
+
+				logger.setUseParentHandlers(false);
+			} catch (IOException e)
+			{
+				logger.log(Level.WARNING, "Error setting up file stream for logging", e);
+			}
+		}
+
+		clear();
 
 		if (num == 1)
 			serverPort = FFA;
@@ -99,18 +121,18 @@ public final class NetProtocol
 			{
 				if (inputLine.equals(""))
 				{
-					logger.log(Level.FINEST, "breaking, input: " + inputLine);
+					logger.log(Level.FINEST, "breaking, input ended");
 					continue;
 				}
 
 				result += inputLine + "\n";
 			}
 
-		} catch (IOException e)
+		} catch (InterruptedException e)
 		{
 			logger.log(Level.WARNING, e.getMessage(), e);
 			JOptionPane.showMessageDialog(null, e.getMessage());
-		} catch (InterruptedException e)
+		} catch (IOException e)
 		{
 			logger.log(Level.WARNING, e.getMessage(), e);
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -210,7 +232,7 @@ public final class NetProtocol
 			{
 				if (inputLine.equals(""))
 				{
-					logger.log(Level.FINEST, "breaking, input: " + inputLine);
+					logger.log(Level.FINEST, "breaking, input ended");
 					continue;
 				}
 				logger.log(Level.FINEST, "adding client: " + inputLine);
@@ -263,6 +285,7 @@ public final class NetProtocol
 		try
 		{
 			bytesOfMessage = str.getBytes("UTF-8");
+			str = "";
 
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			thedigest = md.digest(bytesOfMessage);

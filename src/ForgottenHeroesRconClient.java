@@ -6,29 +6,12 @@ import java.util.logging.*;
 
 public class ForgottenHeroesRconClient
 {
+	private static final Logger logger = Logger.getLogger(ForgottenHeroesRconClient.class.getName());
+	private static Handler filehandle = null;
+	private static Handler consolehandle = null;
+
 	public static void main(String[] args)
 	{
-		Logger logger = Logger.getLogger(ForgottenHeroesRconClient.class.getName());
-
-		System.setProperty("java.util.logging.SimpleFormatter.format",
-				"[%1$tc] %n%2$s %4$s: %5$s%n%n");
-
-		Handler filehandle = null;
-		Formatter format = null;
-		try
-		{
-			format = new SimpleFormatter();
-			filehandle = new FileHandler("fhrcon_debug.log");
-			filehandle.setFormatter(format);
-
-			logger.addHandler(filehandle);
-
-			logger.setLevel(Level.ALL);
-			filehandle.setLevel(Level.ALL);
-		} catch (IOException e)
-		{
-			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
-		}
 
 		try
 		{
@@ -45,9 +28,33 @@ public class ForgottenHeroesRconClient
 		{
 			logger.severe("Unexpected exception occurred reading the config file, could not recover.");
 			logger.log(Level.SEVERE, e.getMessage(), e);
-			e.printStackTrace();
 			System.exit(1);
 		}
+
+		System.setProperty("java.util.logging.SimpleFormatter.format", Config.getLoggingFormat());
+
+		try
+		{
+			SimpleFormatter sf = new SimpleFormatter();
+
+			filehandle = new FileHandler("fhrcon_debug.log");
+			filehandle.setFormatter(sf);
+			consolehandle = new ConsoleHandler();
+			consolehandle.setFormatter(sf);
+
+			filehandle.setLevel(Config.getLoggingLevel());
+			consolehandle.setLevel(Config.getLoggingLevel());
+
+			logger.addHandler(filehandle);
+			logger.addHandler(consolehandle);
+
+			logger.setLevel(Config.getLoggingLevel());
+
+		} catch (IOException e)
+		{
+			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
+		}
+
 
 		//NetProtocol.init(1);
 		SwingUtilities.invokeLater(
@@ -60,7 +67,10 @@ public class ForgottenHeroesRconClient
 				});
 
 		if (filehandle != null)
+		{
+			filehandle.flush();
 			filehandle.close();
+		}
 	}
 
 
