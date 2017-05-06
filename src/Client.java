@@ -1,8 +1,8 @@
 //import java.util.List;
 //import java.util.ArrayList;
 
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Client
 {
@@ -45,6 +45,7 @@ public class Client
 	 * Use case ex creating a deep copy
 	 *
 	 * @param id will be the cid
+	 * @param s the value for score
 	 * @param n  will be the name
 	 * @param eN becomes the exactName
 	 * @param g  becomes the guid
@@ -85,7 +86,7 @@ public class Client
 	/**
 	 * guid mutator
 	 *
-	 * @param g
+	 * @param g set the guid field to the value in g
 	 */
 	public void setGuid(String g)
 	{
@@ -175,7 +176,7 @@ public class Client
 	/**
 	 * dataid mutator
 	 *
-	 * @param id
+	 * @param id set the dataid field to the value id
 	 */
 	public void setDatabaseId(String id)
 	{
@@ -195,7 +196,7 @@ public class Client
 	/**
 	 * score mutator
 	 *
-	 * @param s
+	 * @param s set the score field to the value in s
 	 */
 	public void setScore(String s)
 	{
