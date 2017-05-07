@@ -14,6 +14,7 @@ public final class Config
 	private static int serverPort;
 	private static String serverHost;
 	private static String mapImages;
+	private static String logPath;
 
 	// logging variables
 	private static String logFormat;
@@ -30,6 +31,7 @@ public final class Config
 		mapImages = props.getProperty("map_images");
 		logFormat = props.getProperty("log_format");
 		String level = props.getProperty("log_level").toUpperCase();
+		logPath = props.getProperty("log_path");
 
 		if (level.equals("ALL"))
 			logLevel = Level.ALL;
@@ -58,10 +60,11 @@ public final class Config
 	private static void checkValues() throws ConfigurationException
 	{
 		String message = " configuration property is required. Shutting down program...";
-		/* REQUIRED settings for the gameserver */
+		/* REQUIRED settings for the app */
 		if (serverHost == null || serverHost.equals(""))
 			throw new ConfigurationException("hostname" + message);
-
+		if (logPath == null || logPath.equals(""))
+			logPath = "fhrcon_debug.log";
 
 		if (mapImages == null || mapImages.equals(""))
 			mapImages = "resources/images/";
@@ -91,6 +94,11 @@ public final class Config
 	public static String getLoggingFormat()
 	{
 		return logFormat;
+	}
+
+	public static String getLogPath()
+	{
+		return logPath;
 	}
 
 }
