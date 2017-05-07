@@ -12,8 +12,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import java.util.logging.*;
 
 public class MainWindow
 {
@@ -34,6 +33,23 @@ public class MainWindow
 
 	public MainWindow()
 	{
+		try
+		{
+			SimpleFormatter sf = new SimpleFormatter();
+
+			Handler filehandle = new FileHandler(Config.getLogPath(), true);
+			filehandle.setFormatter(sf);
+			filehandle.setLevel(Config.getLoggingLevel());
+
+			logger.addHandler(filehandle);
+			logger.setLevel(Config.getLoggingLevel());
+
+			logger.setUseParentHandlers(true);
+		} catch (IOException e)
+		{
+			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
+		}
+
 		frame = new JFrame("Forgotten Heroes | RCon");
 		frame.setPreferredSize(new Dimension(900, 600));
 
