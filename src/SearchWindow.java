@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.*;
 
 public class SearchWindow
 {
@@ -10,8 +12,27 @@ public class SearchWindow
 	private JTextField data;
 	private JButton submit;
 
+	private Logger logger = Logger.getLogger(SearchWindow.class.getName());
+
 	public SearchWindow()
 	{
+		try
+		{
+			SimpleFormatter sf = new SimpleFormatter();
+
+			Handler filehandle = new FileHandler(Config.getLogPath(), true);
+			filehandle.setFormatter(sf);
+			filehandle.setLevel(Config.getLoggingLevel());
+
+			logger.addHandler(filehandle);
+			logger.setLevel(Config.getLoggingLevel());
+
+			logger.setUseParentHandlers(true);
+		} catch (IOException e)
+		{
+			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
+		}
+
 		frame = new JFrame("Database Search:");
 		searchPanel = new JPanel();
 

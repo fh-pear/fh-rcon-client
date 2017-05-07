@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.IOException;
+import java.util.logging.*;
 
 public class KickWindow extends JFrame
 {
@@ -16,6 +16,23 @@ public class KickWindow extends JFrame
 
 	public KickWindow(Client cl)
 	{
+		try
+		{
+			SimpleFormatter sf = new SimpleFormatter();
+
+			Handler filehandle = new FileHandler(Config.getLogPath(), true);
+			filehandle.setFormatter(sf);
+			filehandle.setLevel(Config.getLoggingLevel());
+
+			logger.addHandler(filehandle);
+			logger.setLevel(Config.getLoggingLevel());
+
+			logger.setUseParentHandlers(true);
+		} catch (IOException e)
+		{
+			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
+		}
+
 		c = cl;
 
 		frame = new JFrame("Kick Client: " + c.getName());

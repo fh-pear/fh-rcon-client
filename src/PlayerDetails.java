@@ -1,7 +1,9 @@
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.io.IOException;
 import java.util.Date;
+import java.util.logging.*;
 
 public class PlayerDetails
 {
@@ -14,9 +16,27 @@ public class PlayerDetails
 	private PenaltyTableModel dtm1;
 
 	private String databaseId;
+	private Logger logger = Logger.getLogger(PlayerDetails.class.getName());
 
 	public PlayerDetails(Client cl)
 	{
+		try
+		{
+			SimpleFormatter sf = new SimpleFormatter();
+
+			Handler filehandle = new FileHandler(Config.getLogPath(), true);
+			filehandle.setFormatter(sf);
+			filehandle.setLevel(Config.getLoggingLevel());
+
+			logger.addHandler(filehandle);
+			logger.setLevel(Config.getLoggingLevel());
+
+			logger.setUseParentHandlers(true);
+		} catch (IOException e)
+		{
+			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
+		}
+
 		c = cl;
 
 		frame = new JFrame("Player Details: " + c.getName());

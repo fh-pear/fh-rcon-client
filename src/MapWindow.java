@@ -8,8 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 public class MapWindow
 {
@@ -30,6 +29,23 @@ public class MapWindow
 
 	public MapWindow()
 	{
+		try
+		{
+			SimpleFormatter sf = new SimpleFormatter();
+
+			Handler filehandle = new FileHandler(Config.getLogPath(), true);
+			filehandle.setFormatter(sf);
+			filehandle.setLevel(Config.getLoggingLevel());
+
+			logger.addHandler(filehandle);
+			logger.setLevel(Config.getLoggingLevel());
+
+			logger.setUseParentHandlers(true);
+		} catch (IOException e)
+		{
+			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
+		}
+
 		frame = new JFrame("Map Selection: ");
 		frame.setLayout(new BorderLayout());
 		init();
