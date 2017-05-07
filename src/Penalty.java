@@ -25,7 +25,7 @@ public class Penalty
 			logger.addHandler(filehandle);
 			logger.setLevel(Config.getLoggingLevel());
 
-			logger.setUseParentHandlers(true);
+			logger.setUseParentHandlers(Config.logToConsole());
 		} catch (IOException e)
 		{
 			logger.log(Level.WARNING, "Error setting up file stream for logging", e);

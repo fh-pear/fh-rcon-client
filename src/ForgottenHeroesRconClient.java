@@ -38,11 +38,11 @@ public class ForgottenHeroesRconClient
 
 			filehandle.setLevel(Config.getLoggingLevel());
 
-			Logger.getLogger("").addHandler(filehandle);
+			logger.addHandler(filehandle);
 			Logger.getLogger("").setLevel(Config.getLoggingLevel());
 
 			logger.setLevel(Config.getLoggingLevel());
-
+			logger.setUseParentHandlers(Config.logToConsole());
 		} catch (IOException e)
 		{
 			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
