@@ -24,6 +24,7 @@ public class ForgottenHeroesRconClient
 		{
 			logger.severe(e.getMessage());
 			logger.severe("Could not parse argument to a number format. Please check your config");
+			System.exit(1);
 		} catch (Exception e)
 		{
 			logger.severe("Unexpected exception occurred reading the config file, could not recover.");
@@ -37,16 +38,13 @@ public class ForgottenHeroesRconClient
 		{
 			SimpleFormatter sf = new SimpleFormatter();
 
-			filehandle = new FileHandler("fhrcon_debug.log");
+			filehandle = new FileHandler(Config.getLogPath());
 			filehandle.setFormatter(sf);
-			consolehandle = new ConsoleHandler();
-			consolehandle.setFormatter(sf);
 
 			filehandle.setLevel(Config.getLoggingLevel());
-			consolehandle.setLevel(Config.getLoggingLevel());
 
-			logger.addHandler(filehandle);
-			logger.addHandler(consolehandle);
+			Logger.getLogger("").addHandler(filehandle);
+			Logger.getLogger("").setLevel(Config.getLoggingLevel());
 
 			logger.setLevel(Config.getLoggingLevel());
 
@@ -54,7 +52,6 @@ public class ForgottenHeroesRconClient
 		{
 			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
 		}
-
 
 		//NetProtocol.init(1);
 		SwingUtilities.invokeLater(
