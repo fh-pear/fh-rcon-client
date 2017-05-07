@@ -20,7 +20,7 @@ public final class Config
 	private static String logFormat;
 	private static Level logLevel;
 
-	public static void init(String fileName) throws NumberFormatException, IOException, ConfigurationException
+	public static void init(String fileName) throws IOException, ConfigurationException
 	{
 		Properties props = new Properties();
 		InputStream is = Config.class.getResourceAsStream(fileName);
