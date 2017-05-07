@@ -20,11 +20,6 @@ public class ForgottenHeroesRconClient
 		{
 			logger.severe(e.getMessage());
 			System.exit(1);
-		} catch (NumberFormatException e)
-		{
-			logger.severe(e.getMessage());
-			logger.severe("Could not parse argument to a number format. Please check your config");
-			System.exit(1);
 		} catch (Exception e)
 		{
 			logger.severe("Unexpected exception occurred reading the config file, could not recover.");
