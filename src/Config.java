@@ -15,6 +15,7 @@ public final class Config
 	private static String serverHost;
 	private static String mapImages;
 	private static String logPath;
+	private static boolean logToConsole;
 
 	// logging variables
 	private static String logFormat;
@@ -32,6 +33,7 @@ public final class Config
 		logFormat = props.getProperty("log_format");
 		String level = props.getProperty("log_level").toUpperCase();
 		logPath = props.getProperty("log_path");
+		String console = props.getProperty("log_to_console");
 
 		if (level.equals("ALL"))
 			logLevel = Level.ALL;
@@ -52,7 +54,13 @@ public final class Config
 		else
 			logLevel = Level.OFF;
 
+		if (console.equals("true"))
+			logToConsole = true;
+		else
+			logToConsole = false;
+
 		checkValues();
+		is.close();
 	}
 
 	// some settings can be blank, and we can assign defaults
@@ -99,6 +107,11 @@ public final class Config
 	public static String getLogPath()
 	{
 		return logPath;
+	}
+
+	public static boolean logToConsole()
+	{
+		return logToConsole;
 	}
 
 }
