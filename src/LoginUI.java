@@ -37,7 +37,8 @@ public class LoginUI
 		frame.pack();
 		frame.setVisible(true);
 
-		login();
+		if (!PasswordManagement.getPassword().equals(""))
+			login();
 
 	}
 
@@ -112,6 +113,7 @@ public class LoginUI
 		userText.addKeyListener(new LoginListener());
 		serverSelect.addKeyListener(new LoginListener());
 		remember.addActionListener(new LoginListener());
+		remember.addKeyListener(new LoginListener());
 	}
 
 	private class LoginListener extends KeyAdapter implements ActionListener
