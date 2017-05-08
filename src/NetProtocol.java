@@ -1,12 +1,13 @@
 import javax.swing.*;
-import java.io.*;
-import java.math.BigInteger;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public final class NetProtocol
@@ -28,34 +29,12 @@ public final class NetProtocol
 	private static boolean loggedIn = false;
 	private static ArrayList<Client> clients = new ArrayList<Client>();
 	private static ArrayList<Client> clientBuffer = new ArrayList<Client>();
-	private static Logger logger = null;
+	private static Logger logger = Logger.getLogger(NetProtocol.class.getName());
 
 	public static String map = "";
 
 	public static void init(int num)
 	{
-		if (logger == null)
-		{
-			logger = Logger.getLogger(NetProtocol.class.getName());
-
-			try
-			{
-				SimpleFormatter sf = new SimpleFormatter();
-
-				Handler filehandle = new FileHandler(Config.getLogPath(), true);
-				filehandle.setFormatter(sf);
-				filehandle.setLevel(Config.getLoggingLevel());
-
-				logger.addHandler(filehandle);
-				logger.setLevel(Config.getLoggingLevel());
-
-				logger.setUseParentHandlers(Config.logToConsole());
-			} catch (IOException e)
-			{
-				logger.log(Level.WARNING, "Error setting up file stream for logging", e);
-			}
-		}
-
 		clear();
 
 		if (num == 1)
