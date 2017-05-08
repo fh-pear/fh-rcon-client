@@ -1,8 +1,12 @@
 import javax.naming.ConfigurationException;
+import java.io.FileOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.Properties;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public final class Config
@@ -14,17 +18,21 @@ public final class Config
 	private static int serverPort;
 	private static String serverHost;
 	private static String mapImages;
-	private static String logPath;
-	private static boolean logToConsole;
+
+	private static String configFile;
 
 	// logging variables
 	private static String logFormat;
 	private static Level logLevel;
+	private static String logPath;
+	private static boolean logToConsole;
+	private static Logger logger = Logger.getLogger(Config.class.getName());
 
 	public static void init(String fileName) throws IOException, ConfigurationException
 	{
+		configFile = fileName;
 		Properties props = new Properties();
-		InputStream is = Config.class.getResourceAsStream(fileName);
+		InputStream is = Config.class.getResourceAsStream(configFile);
 
 		props.load(is);
 
@@ -78,6 +86,7 @@ public final class Config
 			mapImages = "resources/images/";
 
 	}
+
 
 	public static String getServerHost()
 	{

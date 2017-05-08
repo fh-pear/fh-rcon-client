@@ -269,32 +269,25 @@ public final class NetProtocol
 
 	}
 
-	public static void login(String user, char[] pass) throws VersionError
+	public static void login(String user, char[] pass, boolean rememberMeSelector) throws VersionError
 	{
-		String str = new String(pass);
-		byte[] bytesOfMessage = null;
-		byte[] thedigest = null;
-
 		try
 		{
-			bytesOfMessage = str.getBytes("UTF-8");
-			str = "";
+			String str = new String(pass);
 
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			thedigest = md.digest(bytesOfMessage);
+			if (!PasswordManagement.getPassword().equals(str))
+				password = Function.getMD5(pass);
+			else // provide char array is a hashed password
+				password = str;
 
-			BigInteger bigInt = new BigInteger(1, thedigest);
-			String hashtext = bigInt.toString(16);
-
-			while (hashtext.length() < 32)
-			{
-				hashtext = "0" + hashtext;
-			}
-
-			password = new String(hashtext);
 
 			out.println(user + UNIT_SEPARATOR + password);
 			logger.log(Level.FINEST, "Password hash: " + password);
+
+			if (rememberMeSelector)
+				PasswordManagement.savePassword(user, password, true);
+			else
+				PasswordManagement.savePassword("", "", false);
 
 			String inputLine, input = "";
 			while (!(inputLine = in.readLine()).equals("..."))
@@ -337,14 +330,6 @@ public final class NetProtocol
 				loggedIn = false;
 				clear();
 			}
-		} catch (UnsupportedEncodingException e)
-		{
-			logger.log(Level.SEVERE, e.getMessage(), e);
-			JOptionPane.showMessageDialog(null, "Your machine does not support UTF-8 encoding. \n\n" + e.getMessage());
-		} catch (NoSuchAlgorithmException e)
-		{
-			logger.log(Level.SEVERE, e.getMessage(), e);
-			JOptionPane.showMessageDialog(null, "Your machine does not support MD5 hashing. \n\n" + e.getMessage());
 		} catch (IOException e)
 		{
 			logger.log(Level.SEVERE, e.getMessage(), e);
