@@ -21,23 +21,6 @@ public class Client
 	 */
 	public Client(String str)
 	{
-		try
-		{
-			SimpleFormatter sf = new SimpleFormatter();
-
-			Handler filehandle = new FileHandler(Config.getLogPath(), true);
-			filehandle.setFormatter(sf);
-			filehandle.setLevel(Config.getLoggingLevel());
-
-			logger.addHandler(filehandle);
-			logger.setLevel(Config.getLoggingLevel());
-
-			logger.setUseParentHandlers(true);
-		} catch (IOException e)
-		{
-			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
-		}
-
 		logger.log(Level.FINE, "New Client Object: " + str);
 		String[] parse = str.split("\t");
 		
@@ -69,23 +52,6 @@ public class Client
 	 */
 	public Client(String id, String s, String n, String eN, String g)
 	{
-		try
-		{
-			SimpleFormatter sf = new SimpleFormatter();
-
-			Handler filehandle = new FileHandler(Config.getLogPath(), true);
-			filehandle.setFormatter(sf);
-			filehandle.setLevel(Config.getLoggingLevel());
-
-			logger.addHandler(filehandle);
-			logger.setLevel(Config.getLoggingLevel());
-
-			logger.setUseParentHandlers(Config.logToConsole());
-		} catch (IOException e)
-		{
-			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
-		}
-
 		cid = id;
 		score = s;
 		name = n;

@@ -14,23 +14,6 @@ public class Penalty
 
 	public Penalty(String str, long t)
 	{
-		try
-		{
-			SimpleFormatter sf = new SimpleFormatter();
-
-			Handler filehandle = new FileHandler(Config.getLogPath(), true);
-			filehandle.setFormatter(sf);
-			filehandle.setLevel(Config.getLoggingLevel());
-
-			logger.addHandler(filehandle);
-			logger.setLevel(Config.getLoggingLevel());
-
-			logger.setUseParentHandlers(Config.logToConsole());
-		} catch (IOException e)
-		{
-			logger.log(Level.WARNING, "Error setting up file stream for logging", e);
-		}
-
 		String[] details = str.split("\t");
 		time = t;
 

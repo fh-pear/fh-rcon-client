@@ -3,7 +3,6 @@ import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,9 +21,6 @@ public final class Config
 	private static String configFile;
 
 	// logging variables
-	private static String logFormat;
-	private static Level logLevel;
-	private static String logPath;
 	private static boolean logToConsole;
 	private static Logger logger = Logger.getLogger(Config.class.getName());
 
@@ -38,29 +34,9 @@ public final class Config
 
 		serverHost = props.getProperty("hostname");
 		mapImages = props.getProperty("map_images");
-		logFormat = props.getProperty("log_format");
-		String level = props.getProperty("log_level").toUpperCase();
-		logPath = props.getProperty("log_path");
+
 		String console = props.getProperty("log_to_console");
 
-		if (level.equals("ALL"))
-			logLevel = Level.ALL;
-		else if (level.equals("FINEST"))
-			logLevel = Level.FINEST;
-		else if (level.equals("FINER"))
-			logLevel = Level.FINER;
-		else if (level.equals("FINE"))
-			logLevel = Level.FINE;
-		else if (level.equals("CONFIG"))
-			logLevel = Level.CONFIG;
-		else if (level.equals("INFO"))
-			logLevel = Level.INFO;
-		else if (level.equals("WARNING"))
-			logLevel = Level.WARNING;
-		else if (level.equals("SEVERE"))
-			logLevel = Level.SEVERE;
-		else
-			logLevel = Level.OFF;
 
 		if (console.equals("true"))
 			logToConsole = true;
@@ -79,8 +55,6 @@ public final class Config
 		/* REQUIRED settings for the app */
 		if (serverHost == null || serverHost.equals(""))
 			throw new ConfigurationException("hostname" + message);
-		if (logPath == null || logPath.equals(""))
-			logPath = "fhrcon_debug.log";
 
 		if (mapImages == null || mapImages.equals(""))
 			mapImages = "resources/images/";
@@ -101,21 +75,6 @@ public final class Config
 	public static String getMaps()
 	{
 		return mapImages;
-	}
-
-	public static Level getLoggingLevel()
-	{
-		return logLevel;
-	}
-
-	public static String getLoggingFormat()
-	{
-		return logFormat;
-	}
-
-	public static String getLogPath()
-	{
-		return logPath;
 	}
 
 	public static boolean logToConsole()
