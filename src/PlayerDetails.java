@@ -1,9 +1,8 @@
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.io.IOException;
 import java.util.Date;
-import java.util.logging.*;
+import java.util.logging.Logger;
 
 public class PlayerDetails
 {

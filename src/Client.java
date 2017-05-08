@@ -1,8 +1,8 @@
 //import java.util.List;
 //import java.util.ArrayList;
 
-import java.io.IOException;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Client
 {

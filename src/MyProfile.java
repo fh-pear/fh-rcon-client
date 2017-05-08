@@ -1,6 +1,5 @@
 import javax.swing.*;
-import java.io.IOException;
-import java.util.logging.*;
+import java.util.logging.Logger;
 
 public class MyProfile extends JFrame
 {

@@ -2,8 +2,7 @@
  * Datastructure for holding user info. Username, admin level etc.
  */
 
-import java.io.IOException;
-import java.util.logging.*;
+import java.util.logging.Logger;
 
 public class Profile
 {
