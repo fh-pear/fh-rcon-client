@@ -18,7 +18,6 @@ public final class Config
 	private static String configFile;
 
 	// logging variables
-	private static boolean logToConsole;
 	private static Logger logger = Logger.getLogger(Config.class.getName());
 
 	public static void init(String fileName) throws IOException, ConfigurationException
@@ -31,14 +30,6 @@ public final class Config
 
 		serverHost = props.getProperty("hostname");
 		mapImages = props.getProperty("map_images");
-
-		String console = props.getProperty("log_to_console");
-
-
-		if (console.equals("true"))
-			logToConsole = true;
-		else
-			logToConsole = false;
 
 		checkValues();
 		is.close();
@@ -72,11 +63,6 @@ public final class Config
 	public static String getMaps()
 	{
 		return mapImages;
-	}
-
-	public static boolean logToConsole()
-	{
-		return logToConsole;
 	}
 
 }
