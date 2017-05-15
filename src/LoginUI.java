@@ -50,26 +50,34 @@ public class LoginUI
 		passwordPanel = new JPanel();
 		buttonPanel = new JPanel();
 		rememberPanel = new JPanel();
-		panel.setLayout(new GridLayout(4, 1));
+		//panel.setLayout(new GridLayout(4, 1));
+		panel.setLayout(new BorderLayout());
 
-		JLabel userLabel = new JLabel("User:        ");
+		userPanel.setLayout(new GridLayout(2, 1));
+		passwordPanel.setLayout(new GridLayout(2, 1));
+
+		JLabel userLabel = new JLabel("User: ");
+		userLabel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
 		//userLabel.setBounds(10, 10, 80, 25);
 		userPanel.add(userLabel);
 
 		userText = new JTextField(20);
+		userText.setAlignmentX(JComponent.LEFT_ALIGNMENT);
 		//userText.setBounds(100, 10, 160, 25);
-		userPanel.add(userText);
+		passwordPanel.add(userText);
 		if (PasswordManagement.rememberMe())
 		{
 			userText.setEnabled(false);
 			userText.setText(PasswordManagement.getUserName());
 		}
 
-		JLabel passwordLabel = new JLabel("Password:");
+		JLabel passwordLabel = new JLabel("Password: ");
+		passwordLabel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
 		//passwordLabel.setBounds(10, 40, 80, 25);
-		passwordPanel.add(passwordLabel);
+		userPanel.add(passwordLabel);
 
 		passwordText = new JPasswordField(20);
+		passwordText.setAlignmentX(JComponent.LEFT_ALIGNMENT);
 		//passwordText.setBounds(100, 40, 160, 25);
 		passwordPanel.add(passwordText);
 		if (PasswordManagement.rememberMe())
@@ -99,11 +107,14 @@ public class LoginUI
 			warning.setText(warningLabel);
 		else
 			warning.setText("");
+		JPanel south = new JPanel();
+		south.setLayout(new GridLayout(2, 1));
+		south.add(rememberPanel);
+		south.add(buttonPanel);
 
-		panel.add(userPanel);
-		panel.add(passwordPanel);
-		panel.add(rememberPanel);
-		panel.add(buttonPanel);
+		panel.add(userPanel, BorderLayout.WEST);
+		panel.add(passwordPanel, BorderLayout.CENTER);
+		panel.add(south, BorderLayout.SOUTH);
 
 		frame.add(panel);
 
@@ -167,6 +178,7 @@ public class LoginUI
 				//success
 				frame.dispose();
 				new MainWindow();
+				Profile.init();
 			} else if (!NetProtocol.loggedIn() && remember.isSelected())
 			{
 				JOptionPane.showMessageDialog(null,
