@@ -19,7 +19,7 @@ public class MainWindow
 {
 	private JFrame frame;
 	private JPanel eastPanel, westPanel, centerPanel, southPanel, east1, east2, east3, mapButtons, messages, mapPanel, serverInfo;
-	private JMenuItem menuExit, menuLogout, searchForPlayer;
+	private JMenuItem menuExit, menuLogout, searchForPlayer, myProfile;
 	private JMenuBar menubar;
 	private JMenu file, search;
 	private JTable table;
@@ -36,6 +36,7 @@ public class MainWindow
 	{
 		frame = new JFrame("Forgotten Heroes | RCon");
 		frame.setPreferredSize(new Dimension(900, 600));
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("resources/fhclan.png")));
 
 		BorderLayout bl = new BorderLayout();
 		//bl.setVgap(3);
@@ -92,12 +93,15 @@ public class MainWindow
 		file = new JMenu("File");
 		file.setMnemonic(KeyEvent.VK_F);
 
+		myProfile = new JMenuItem("My Profile");
+
 		menuLogout = new JMenuItem("Logout");
 		menuLogout.setToolTipText("Log out, return to the login screen");
 
 		menuExit = new JMenuItem("Exit", KeyEvent.VK_E);
 		menuExit.setToolTipText("Exit application");
 
+		file.add(myProfile);
 		file.add(menuLogout);
 		file.addSeparator();
 		file.add(menuExit);
@@ -287,6 +291,7 @@ public class MainWindow
 
 	private void implementListeners()
 	{
+		myProfile.addActionListener(new MainWindowListener());
 		menuExit.addActionListener(new MainWindowListener());
 		menuLogout.addActionListener(new MainWindowListener());
 		searchForPlayer.addActionListener(new MainWindowListener());
@@ -318,6 +323,10 @@ public class MainWindow
 				System.gc();
 			}
 
+			if (e.getSource() == myProfile)
+			{
+				new MyProfile();
+			}
 			if (e.getSource() == searchForPlayer)
 			{
 				new SearchWindow();

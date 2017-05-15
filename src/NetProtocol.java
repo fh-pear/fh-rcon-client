@@ -184,6 +184,14 @@ public final class NetProtocol
 		return send(command);
 	}
 
+	public static String[] getProfile()
+	{
+		String command = "getprofile";
+		String response = send(command);
+
+		return response.split(UNIT_SEPARATOR);
+	}
+
 	public static void getMap()
 	{
 		map = send("getmap");
