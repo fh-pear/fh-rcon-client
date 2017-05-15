@@ -37,7 +37,7 @@ public class LoginUI
 		frame.pack();
 		frame.setVisible(true);
 
-		if (!PasswordManagement.getPassword().equals(""))
+		if (!PasswordManagement.getPassword().equals("") && !NetProtocol.previousLogin())
 			login();
 
 	}

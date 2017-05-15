@@ -27,6 +27,7 @@ public final class NetProtocol
 	private static int serverPort;
 	private static String password;
 	private static boolean loggedIn = false;
+	private static boolean priorLogin = false;
 	private static ArrayList<Client> clients = new ArrayList<Client>();
 	private static ArrayList<Client> clientBuffer = new ArrayList<Client>();
 	private static Logger logger = Logger.getLogger(NetProtocol.class.getName());
@@ -302,6 +303,7 @@ public final class NetProtocol
 				if (inputV.equals("Logged in. Waiting for command(s)."))
 				{
 					loggedIn = true;
+					priorLogin = true;
 				} else
 				{
 					clear();
@@ -330,5 +332,10 @@ public final class NetProtocol
 	public static boolean loggedIn()
 	{
 		return loggedIn;
+	}
+
+	public static boolean previousLogin()
+	{
+		return priorLogin;
 	}
 }
