@@ -35,7 +35,7 @@ public class MainWindow
 	public MainWindow()
 	{
 		frame = new JFrame("Forgotten Heroes | RCon");
-		frame.setPreferredSize(new Dimension(900, 600));
+		//frame.setPreferredSize(new Dimension(900, 600));
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("resources/fhclan.png")));
 
 		BorderLayout bl = new BorderLayout();

@@ -193,6 +193,13 @@ public final class NetProtocol
 		return response.split(UNIT_SEPARATOR);
 	}
 
+	public static String changePassword(String curr, String newPass)
+	{
+		String command = "changepassword" + UNIT_SEPARATOR + curr + UNIT_SEPARATOR + newPass;
+
+		return send(command);
+	}
+
 	public static void getMap()
 	{
 		map = send("getmap");

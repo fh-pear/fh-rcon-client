@@ -3,7 +3,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
 import java.awt.*;
-import java.util.Properties;
+import javax.swing.JButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 
 public class MyProfile extends JFrame
@@ -12,13 +14,16 @@ public class MyProfile extends JFrame
 
 	private Logger logger = Logger.getLogger(MyProfile.class.getName());
 	private JTextField name, databaseid, rank, connections, guid;
+	private JButton chgPasswd;
 	private JLabel userLabel, databaseLabel, rankLabel, connectionsLabel, guidLabel;
-	private JPanel labelPanel, fieldPanel;
+	private JPanel main, labelPanel, fieldPanel, buttonPanel;
 
 	public MyProfile()
 	{
 		frame = new JFrame("My Profile");
-		frame.setLayout(new GridLayout(1, 2));
+		main = new JPanel();
+		main.setLayout(new BorderLayout(5, 5));
+		frame.add(main);
 
 		GridLayout layout = new GridLayout(5, 1);
 		layout.setVgap(2);
@@ -26,13 +31,15 @@ public class MyProfile extends JFrame
 		labelPanel.setLayout(layout);
 		fieldPanel = new JPanel();
 		fieldPanel.setLayout(layout);
-		frame.add(labelPanel);
-		frame.add(fieldPanel);
+		buttonPanel = new JPanel();
+		main.add(labelPanel, BorderLayout.WEST);
+		main.add(fieldPanel, BorderLayout.CENTER);
+		main.add(buttonPanel, BorderLayout.SOUTH);
 
 		userLabel = new JLabel("Name: ");
 		databaseLabel = new JLabel("Database ID: ");
 		guidLabel = new JLabel("GUID: ");
-		connectionsLabel = new JLabel("Number of Connections: ");
+		connectionsLabel = new JLabel("Connections: ");
 		rankLabel = new JLabel("Admin Level: ");
 		labelPanel.add(userLabel);
 		labelPanel.add(databaseLabel);
@@ -67,9 +74,30 @@ public class MyProfile extends JFrame
 		fieldPanel.add(connections);
 		fieldPanel.add(rank);
 
+		chgPasswd = new JButton("Change my Password");
+		buttonPanel.add(chgPasswd);
+
+
+		addListeners();
 
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+	}
+
+	public void addListeners()
+	{
+		chgPasswd.addActionListener(new MyProfileListener());
+	}
+
+	private class MyProfileListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			if (e.getSource() == chgPasswd)
+			{
+				new Password();
+			}
+		}
 	}
 }
