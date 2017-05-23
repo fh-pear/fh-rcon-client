@@ -18,6 +18,7 @@ public class Password
 	public Password()
 	{
 		frame = new JFrame("Password Change");
+		frame.setIconImages(IconLoader.getList());
 		main = new JPanel();
 		frame.add(main);
 

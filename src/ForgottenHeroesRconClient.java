@@ -35,6 +35,8 @@ public class ForgottenHeroesRconClient
 			System.exit(1);
 		}
 
+		//load icons
+		IconLoader.init();
 
 		//System.setProperty("java.util.logging.SimpleFormatter.format", Config.getLoggingFormat());
 

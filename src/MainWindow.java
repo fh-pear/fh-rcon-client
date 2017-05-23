@@ -14,6 +14,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.net.URL;
+import java.io.File;
 
 public class MainWindow
 {
@@ -36,7 +38,7 @@ public class MainWindow
 	{
 		frame = new JFrame("Forgotten Heroes | RCon");
 		//frame.setPreferredSize(new Dimension(900, 600));
-		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("resources/fhclan.png")));
+		frame.setIconImages(IconLoader.getList());
 
 		BorderLayout bl = new BorderLayout();
 		//bl.setVgap(3);

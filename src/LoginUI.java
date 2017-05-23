@@ -26,6 +26,7 @@ public class LoginUI
 	public LoginUI()
 	{
 		frame = new JFrame("Forgotten Heroes || Login");
+		frame.setIconImages(IconLoader.getList());
 		PasswordManagement.init();
 
 		init();

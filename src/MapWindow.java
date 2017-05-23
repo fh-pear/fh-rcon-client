@@ -31,6 +31,7 @@ public class MapWindow
 	public MapWindow()
 	{
 		frame = new JFrame("Map Selection: ");
+		frame.setIconImages(IconLoader.getList());
 		frame.setLayout(new BorderLayout());
 		init();
 

@@ -19,6 +19,7 @@ public class KickWindow extends JFrame
 		c = cl;
 
 		frame = new JFrame("Kick Client: " + c.getName());
+		frame.setIconImages(IconLoader.getList());
 		frame.setLayout(null);
 		frame.setSize(400, 250);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

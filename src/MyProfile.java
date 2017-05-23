@@ -21,6 +21,7 @@ public class MyProfile extends JFrame
 	public MyProfile()
 	{
 		frame = new JFrame("My Profile");
+		frame.setIconImages(IconLoader.getList());
 		main = new JPanel();
 		main.setLayout(new BorderLayout(5, 5));
 		frame.add(main);

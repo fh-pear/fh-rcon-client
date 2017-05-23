@@ -22,6 +22,7 @@ public class PlayerDetails
 		c = cl;
 
 		frame = new JFrame("Player Details: " + c.getName());
+		frame.setIconImages(IconLoader.getList());
 		frame.setLayout(new GridLayout(3, 1));
 
 		init(); //this will get the databaseid

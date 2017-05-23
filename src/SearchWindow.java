@@ -16,6 +16,7 @@ public class SearchWindow
 	public SearchWindow()
 	{
 		frame = new JFrame("Database Search:");
+		frame.setIconImages(IconLoader.getList());
 		searchPanel = new JPanel();
 
 		search = new JLabel("Search for: ");
