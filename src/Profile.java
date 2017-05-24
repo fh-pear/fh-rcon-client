@@ -66,7 +66,7 @@ public class Profile
 
 	private static void setLevel(String l)
 	{
-		level = l;
+		level = l.replaceAll("\\s", "");
 	}
 
 	public static String getLevel()
