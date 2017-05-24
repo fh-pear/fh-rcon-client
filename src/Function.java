@@ -3,12 +3,19 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * static service function class
  */
 public class Function
 {
+	private static Logger logger = Logger.getLogger(Function.class.getName());
+
 	public static String getMD5(char[] array)
 	{
 		String str = new String(array), hashtext = "";
@@ -41,5 +48,28 @@ public class Function
 		}
 
 		return hashtext;
+	}
+
+	public static String getDate(String unixTime)
+	{
+		long unixSeconds = 0;
+
+		try
+		{
+			unixSeconds = Long.parseLong(unixTime.replaceAll("\\s", ""));
+		} catch (NumberFormatException e)
+		{
+			logger.log(Level.WARNING, "Error parsing date:" + e.getMessage(), e);
+			return "DATE PARSE ERROR";
+		}
+
+		if (unixSeconds < 0)
+			return "Never";
+
+		Date date = new Date(unixSeconds * 1000L); // *1000 is to convert seconds to milliseconds
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z"); // the format of your date
+		sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+
+		return sdf.format(date);
 	}
 }

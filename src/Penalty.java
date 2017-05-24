@@ -26,10 +26,10 @@ public class Penalty
 			setReason(details[4]);
 			data = details[5];
 
-			timeAdd = getDate(details[6]);
+			timeAdd = Function.getDate(details[6]);
 			setPenaltyAdd(details[6]);
 
-			timeExpire = getDate(details[7]);
+			timeExpire = Function.getDate(details[7]);
 			setPenaltyExpire(details[7]);
 
 			setInactive(details[3]); /*set inactive last, so we can look at expire etc to do a full
@@ -127,7 +127,7 @@ public class Penalty
 
 	public void setTimeExpire(String str)
 	{
-		timeExpire = getDate(str);
+		timeExpire = Function.getDate(str);
 	}
 
 	public void setPenaltyExpire(String str)
@@ -146,23 +146,4 @@ public class Penalty
 		return timeExpire;
 	}
 
-	private String getDate(String unixTime)
-	{
-		long unixSeconds = 0;
-
-		try
-		{
-			unixSeconds = Long.parseLong(unixTime);
-		} catch (NumberFormatException e)
-		{
-			logger.log(Level.WARNING, "Error parsing date:" + e.getMessage(), e);
-			return "DATE PARSE ERROR";
-		}
-
-		Date date = new Date(unixSeconds * 1000L); // *1000 is to convert seconds to milliseconds
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z"); // the format of your date
-		sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-
-		return sdf.format(date);
-	}
 }

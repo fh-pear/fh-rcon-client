@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 public class PlayerDetails
 {
 	private Client c;
-	private JTextField dataid, guid, name, connections, level, title;
+	private JTextField dataid, guid, name, connections, level, firstSeen, lastSeen;
 	private JFrame frame;
 	private JPanel topPanel, aliasPanel, penaltiesPanel, centerPanel;
 	private JTable table;
@@ -74,9 +74,9 @@ public class PlayerDetails
 	public void topPanel()
 	{
 		topPanel = new JPanel();
-		topPanel.setLayout(new GridLayout(3, 2));
+		topPanel.setLayout(new GridLayout(4, 2));
 
-		//<id>:<name>:<guid>:<connections>:<level (String title)>:<level (int value)>
+		//<id>:<name>:<guid>:<connections>:<level (String title)>:<level (int value)>:<first seen>:<last seen>
 		String[] results = NetProtocol.getProfile(databaseId);
 
 		JPanel idPanel = new JPanel();
@@ -89,12 +89,18 @@ public class PlayerDetails
 		levelPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JPanel guidPanel = new JPanel();
 		guidPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JPanel firstSeenPanel = new JPanel();
+		firstSeenPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JPanel lastSeenPanel = new JPanel();
+		lastSeenPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		JLabel atid = new JLabel("@ID:");
 		JLabel con = new JLabel("Connections:");
 		JLabel n = new JLabel("Name:");
 		JLabel lev = new JLabel("Level:");
 		JLabel g = new JLabel("GUID:");
+		JLabel first = new JLabel("First Seen:");
+		JLabel last = new JLabel("Last Seen:");
 
 		name = new JTextField(results[1]);
 		name.setEditable(false);
@@ -131,11 +137,28 @@ public class PlayerDetails
 		guidPanel.add(g);
 		guidPanel.add(guid);
 
+		firstSeen = new JTextField(Function.getDate(results[6]));
+		firstSeen.setEditable(false);
+		firstSeen.setBorder(null);
+		firstSeen.setBackground(null);
+		firstSeenPanel.add(first);
+		firstSeenPanel.add(firstSeen);
+
+		lastSeen = new JTextField(Function.getDate(results[7]));
+		lastSeen.setEditable(false);
+		lastSeen.setBorder(null);
+		lastSeen.setBackground(null);
+		lastSeenPanel.add(last);
+		lastSeenPanel.add(lastSeen);
+
 		topPanel.add(namePanel);
 		topPanel.add(idPanel);
 		topPanel.add(levelPanel);
 		topPanel.add(connectionPanel);
 		topPanel.add(guidPanel);
+		topPanel.add(new JLabel()); //blank tile
+		topPanel.add(firstSeenPanel);
+		topPanel.add(lastSeenPanel);
 		frame.add(topPanel, BorderLayout.NORTH);
 	}
 
