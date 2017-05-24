@@ -15,23 +15,36 @@ public class Penalty
 	public Penalty(String str, long t)
 	{
 		String[] details = str.split("\t");
-		time = t;
+		if (!str.isEmpty())
+		{
+			time = t;
 
-		banid = details[0];
-		penaltyType = details[1];
-		duration = details[2];
+			banid = details[0];
+			penaltyType = details[1];
+			duration = details[2];
 
-		setReason(details[4]);
-		data = details[5];
+			setReason(details[4]);
+			data = details[5];
 
-		timeAdd = getDate(details[6]);
-		setPenaltyAdd(details[6]);
+			timeAdd = getDate(details[6]);
+			setPenaltyAdd(details[6]);
 
-		timeExpire = getDate(details[7]);
-		setPenaltyExpire(details[7]);
+			timeExpire = getDate(details[7]);
+			setPenaltyExpire(details[7]);
 
-		setInactive(details[3]); /*set inactive last, so we can look at expire etc to do a full
+			setInactive(details[3]); /*set inactive last, so we can look at expire etc to do a full
 			analysis to see if the penalty is active or not*/
+		} else
+		{
+			time = t;
+			banid = "";
+			penaltyType = "";
+			duration = "";
+			reason = "";
+			data = "";
+			timeAdd = "";
+			timeExpire = "";
+		}
 	}
 
 	public String getBanId()

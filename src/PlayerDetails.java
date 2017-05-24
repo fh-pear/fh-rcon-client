@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 public class PlayerDetails
 {
 	private Client c;
-	private JLabel aliasNone, penaltyNone;
 	private JTextField dataid, guid, name, connections, level, title;
 	private JFrame frame;
 	private JPanel topPanel, aliasPanel, penaltiesPanel, centerPanel;
@@ -145,8 +144,6 @@ public class PlayerDetails
 		aliasPanel = new JPanel();
 		aliasPanel.setLayout(new GridLayout(1, 1));
 
-		aliasPanel.setBorder(BorderFactory.createTitledBorder("Aliases"));
-
 		String str = "";
 		if (!databaseId.equals("none"))
 			str = NetProtocol.getAliases(databaseId);
@@ -156,11 +153,12 @@ public class PlayerDetails
 
 		if (str.equals("none\n"))
 		{
-			aliasNone = new JLabel("No additional aliases in B3 database.");
-			aliasPanel.add(aliasNone);
+			aliasTable("");
 		} else
 			aliasTable(str);
 
+
+		aliasPanel.setBorder(BorderFactory.createTitledBorder("Aliases - " + dtm.getRowCount() + " total"));
 		centerPanel.add(aliasPanel);
 	}
 
@@ -191,7 +189,8 @@ public class PlayerDetails
 
 		for (int i = 0; i < aliasLines.length; i++)
 		{
-			dtm.addAlias(new Alias(aliasLines[i]));
+			if (!aliasLines[i].equals(""))
+				dtm.addAlias(new Alias(aliasLines[i]));
 		}
 
 		aliasPanel.add(new JScrollPane(table));
@@ -201,8 +200,6 @@ public class PlayerDetails
 	{
 		penaltiesPanel = new JPanel();
 		penaltiesPanel.setLayout(new GridLayout(1, 1));
-
-		penaltiesPanel.setBorder(BorderFactory.createTitledBorder("Penalties"));
 
 
 		String str = "";
@@ -214,11 +211,11 @@ public class PlayerDetails
 
 		if (str.equals("none\n"))
 		{
-			penaltyNone = new JLabel("No penalties found in B3 database.");
-			penaltiesPanel.add(penaltyNone);
+			penaltiesTable("");
 		} else
 			penaltiesTable(str);
 
+		penaltiesPanel.setBorder(BorderFactory.createTitledBorder("Penalties - " + dtm1.getRowCount() + " total"));
 		centerPanel.add(penaltiesPanel);
 	}
 
@@ -252,7 +249,8 @@ public class PlayerDetails
 		long time = new Date().getTime() / 1000L;
 		for (int i = 0; i < penaltyLines.length; i++)
 		{
-			dtm1.addPenalty(new Penalty(penaltyLines[i], time));
+			if (!penaltyLines[i].equals(""))
+				dtm1.addPenalty(new Penalty(penaltyLines[i], time));
 		}
 
 		penaltiesPanel.add(new JScrollPane(table));
