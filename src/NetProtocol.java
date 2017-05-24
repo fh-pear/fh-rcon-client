@@ -185,9 +185,9 @@ public final class NetProtocol
 		return send(command);
 	}
 
-	public static String[] getProfile()
+	public static String[] getProfile(String id)
 	{
-		String command = "getprofile";
+		String command = "getprofile" + UNIT_SEPARATOR + id;
 		String response = send(command);
 
 		return response.split(UNIT_SEPARATOR);

@@ -13,7 +13,7 @@ public class Profile
 	{
 		//getProfile() raw string format before splitting in token
 		//<id>:<name>:<guid>:<connections>:<level (String title)>:<level (int value)>
-		String[] details = NetProtocol.getProfile();
+		String[] details = NetProtocol.getProfile("self");
 
 		setClientid(details[0]);
 		setName(details[1]);
