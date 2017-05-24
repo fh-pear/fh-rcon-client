@@ -16,28 +16,8 @@ public class Alias
 		String[] details = str.split("\t");
 
 		alias = details[0];
-		firstUsed = getDate(details[1]);
-		lastUsed = getDate(details[2]);
-	}
-
-	private String getDate(String unixTime)
-	{
-		long unixSeconds = 0;
-
-		try
-		{
-			unixSeconds = Long.parseLong(unixTime);
-		} catch (NumberFormatException e)
-		{
-			logger.log(Level.WARNING, e.getMessage());
-			return "DATE PARSE ERROR";
-		}
-
-		Date date = new Date(unixSeconds * 1000L); // *1000 is to convert seconds to milliseconds
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z"); // the format of your date
-		sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-
-		return sdf.format(date);
+		firstUsed = Function.getDate(details[1]);
+		lastUsed = Function.getDate(details[2]);
 	}
 
 	public String getAlias()
@@ -62,11 +42,11 @@ public class Alias
 
 	public void setFirstUsed(String newDate)
 	{
-		firstUsed = getDate(newDate);
+		firstUsed = Function.getDate(newDate);
 	}
 
 	public void setLastUsed(String newDate)
 	{
-		lastUsed = getDate(newDate);
+		lastUsed = Function.getDate(newDate);
 	}
 }
