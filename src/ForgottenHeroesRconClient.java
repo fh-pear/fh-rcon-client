@@ -5,6 +5,11 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.awt.Toolkit;
+
+import com.apple.eawt.Application;
+
+import java.awt.Image;
 
 
 public class ForgottenHeroesRconClient
@@ -37,6 +42,12 @@ public class ForgottenHeroesRconClient
 
 		//load icons
 		IconLoader.init();
+		if (System.getProperty("os.name").startsWith("Mac"))
+		{
+			Application application = Application.getApplication();
+			Image image = Toolkit.getDefaultToolkit().getImage("icon.png");
+			application.setDockIconImage(IconLoader.get32());
+		}
 
 		//System.setProperty("java.util.logging.SimpleFormatter.format", Config.getLoggingFormat());
 

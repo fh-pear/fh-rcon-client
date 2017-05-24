@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class IconLoader
 {
 	private static ArrayList<Image> array;
+	private static Image image16, image32, image48;
 
 	public static void init()
 	{
@@ -26,23 +27,38 @@ public class IconLoader
 	{
 		URL url = ClassLoader.getSystemResource("resources/icons/fhclan.png");
 		Toolkit kit = Toolkit.getDefaultToolkit();
-		Image img = kit.createImage(url);
-		array.add(img);
+		image48 = kit.createImage(url);
+		array.add(image48);
+	}
+
+	public static Image get48()
+	{
+		return image48;
 	}
 
 	private static void add32()
 	{
 		URL url = ClassLoader.getSystemResource("resources/icons/fhclan_32.png");
 		Toolkit kit = Toolkit.getDefaultToolkit();
-		Image img = kit.createImage(url);
-		array.add(img);
+		image32 = kit.createImage(url);
+		array.add(image32);
+	}
+
+	public static Image get32()
+	{
+		return image32;
 	}
 
 	private static void add16()
 	{
 		URL url = ClassLoader.getSystemResource("resources/icons/fhclan_16.png");
 		Toolkit kit = Toolkit.getDefaultToolkit();
-		Image img = kit.createImage(url);
-		array.add(img);
+		image16 = kit.createImage(url);
+		array.add(image16);
+	}
+
+	public static Image get16()
+	{
+		return image16;
 	}
 }
