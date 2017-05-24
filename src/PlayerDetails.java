@@ -3,13 +3,17 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.util.Date;
 import java.util.logging.Logger;
+/*
+ * TODO: find/implement a way to handle when no user is present in database
+ */
 
 public class PlayerDetails
 {
 	private Client c;
-	private JLabel dataid, aliasNone, penaltyNone;
+	private JLabel aliasNone, penaltyNone;
+	private JTextField dataid, guid, name, connections, level, title;
 	private JFrame frame;
-	private JPanel topPanel, aliasPanel, penaltiesPanel;
+	private JPanel topPanel, aliasPanel, penaltiesPanel, centerPanel;
 	private JTable table;
 	private AliasTableModel dtm;
 	private PenaltyTableModel dtm1;
@@ -22,8 +26,7 @@ public class PlayerDetails
 		c = cl;
 
 		frame = new JFrame("Player Details: " + c.getName());
-		frame.setIconImages(IconLoader.getList());
-		frame.setLayout(new GridLayout(3, 1));
+		frameSetup();
 
 		init(); //this will get the databaseid
 		topPanel();
@@ -37,7 +40,7 @@ public class PlayerDetails
 	public PlayerDetails(String clientid)
 	{
 		frame = new JFrame("Player Details: ");
-		frame.setLayout(new GridLayout(3, 1));
+		frameSetup();
 
 		databaseId = clientid;
 		databaseId = databaseId.trim();
@@ -50,8 +53,19 @@ public class PlayerDetails
 		frame.setVisible(true);
 	}
 
+	private void frameSetup()
+	{
+		frame.setIconImages(IconLoader.getList());
+		frame.setLayout(new BorderLayout(5, 5));
+
+		centerPanel = new JPanel();
+		centerPanel.setLayout(new GridLayout(2, 1));
+		frame.add(centerPanel, BorderLayout.CENTER);
+	}
+
 	public void init()
 	{
+
 		databaseId = new String();
 		databaseId = NetProtocol.getDatabaseId(c.getClientId(), c.getShortGuid());
 
@@ -61,12 +75,69 @@ public class PlayerDetails
 	public void topPanel()
 	{
 		topPanel = new JPanel();
-		topPanel.setLayout(new FlowLayout());
+		topPanel.setLayout(new GridLayout(3, 2));
 
-		dataid = new JLabel(databaseId);
+		//<id>:<name>:<guid>:<connections>:<level (String title)>:<level (int value)>
+		String[] results = NetProtocol.getProfile(databaseId);
 
-		topPanel.add(dataid);
-		frame.add(topPanel);
+		JPanel idPanel = new JPanel();
+		idPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JPanel namePanel = new JPanel();
+		namePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JPanel connectionPanel = new JPanel();
+		connectionPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JPanel levelPanel = new JPanel();
+		levelPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JPanel guidPanel = new JPanel();
+		guidPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		JLabel atid = new JLabel("@ID:");
+		JLabel con = new JLabel("Connections:");
+		JLabel n = new JLabel("Name:");
+		JLabel lev = new JLabel("Level:");
+		JLabel g = new JLabel("GUID:");
+
+		name = new JTextField(results[1]);
+		name.setEditable(false);
+		name.setBorder(null);
+		name.setBackground(null);
+		namePanel.add(n);
+		namePanel.add(name);
+
+		level = new JTextField(results[4] + " (" + results[5].replaceAll("\\s", "") + ")");
+		level.setEditable(false);
+		level.setBorder(null);
+		level.setBackground(null);
+		levelPanel.add(lev);
+		levelPanel.add(level);
+
+		connections = new JTextField(results[3]);
+		connections.setEditable(false);
+		connections.setBorder(null);
+		connections.setBackground(null);
+		connectionPanel.add(con);
+		connectionPanel.add(connections);
+
+		dataid = new JTextField(databaseId);
+		dataid.setEditable(false);
+		dataid.setBorder(null);
+		dataid.setBackground(null);
+		idPanel.add(atid);
+		idPanel.add(dataid);
+
+		guid = new JTextField(results[2]);
+		guid.setEditable(false);
+		guid.setBorder(null);
+		guid.setBackground(null);
+		guidPanel.add(g);
+		guidPanel.add(guid);
+
+		topPanel.add(namePanel);
+		topPanel.add(idPanel);
+		topPanel.add(levelPanel);
+		topPanel.add(connectionPanel);
+		topPanel.add(guidPanel);
+		frame.add(topPanel, BorderLayout.NORTH);
 	}
 
 	public void aliasPanel()
@@ -90,7 +161,7 @@ public class PlayerDetails
 		} else
 			aliasTable(str);
 
-		frame.add(aliasPanel);
+		centerPanel.add(aliasPanel);
 	}
 
 	public void aliasTable(String str)
@@ -148,7 +219,7 @@ public class PlayerDetails
 		} else
 			penaltiesTable(str);
 
-		frame.add(penaltiesPanel);
+		centerPanel.add(penaltiesPanel);
 	}
 
 	public void penaltiesTable(String str)

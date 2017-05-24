@@ -191,6 +191,7 @@ public final class NetProtocol
 		String response = send(command);
 
 		return response.split(UNIT_SEPARATOR);
+		//<id>:<name>:<guid>:<connections>:<level (String title)>:<level (int value)>
 	}
 
 	public static String changePassword(String curr, String newPass)
