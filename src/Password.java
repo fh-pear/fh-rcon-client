@@ -81,6 +81,15 @@ public class Password
 				} else
 				{
 					String response = NetProtocol.changePassword(Function.getMD5(curr.getPassword()), password);
+
+					if (response.equals("success\n"))
+					{
+						JOptionPane.showMessageDialog(null, "Password updated successfully!",
+								"Success!", JOptionPane.INFORMATION_MESSAGE);
+						frame.dispose();
+					} else
+						JOptionPane.showMessageDialog(null, response, "Password Change Failure",
+								JOptionPane.ERROR_MESSAGE);
 				}
 			}
 
