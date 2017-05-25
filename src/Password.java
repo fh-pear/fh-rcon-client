@@ -86,6 +86,7 @@ public class Password
 					{
 						JOptionPane.showMessageDialog(null, "Password updated successfully!",
 								"Success!", JOptionPane.INFORMATION_MESSAGE);
+						PasswordManagement.saveNewPlaintextPassword(password);
 						frame.dispose();
 					} else
 						JOptionPane.showMessageDialog(null, response, "Password Change Failure",

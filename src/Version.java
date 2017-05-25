@@ -1,5 +1,5 @@
 public interface Version
 {
-	String VERSION = "1.0a";
-	String CLIENT_VERSION = "1.1a";
+	String VERSION = "1.1a";
+	String CLIENT_VERSION = "1.2a";
 }

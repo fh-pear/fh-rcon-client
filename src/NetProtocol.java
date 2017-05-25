@@ -64,7 +64,8 @@ public final class NetProtocol
 		} catch (IOException e)
 		{
 			logger.log(Level.WARNING, "Could not connect to the server: " + e.getMessage(), e);
-			JOptionPane.showMessageDialog(null, "Could not connect to the server: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Could not connect to the server: " + e.getMessage(),
+					"Connection Error", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}

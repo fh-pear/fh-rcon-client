@@ -72,6 +72,11 @@ public class PasswordManagement
 		return password;
 	}
 
+	public static void saveNewPlaintextPassword(String password)
+	{
+		savePassword(userName, Function.getMD5(password), true);
+	}
+
 	public static void savePassword(String user, String pass, boolean remember)
 	{
 		FileWriter file = null;

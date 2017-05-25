@@ -194,7 +194,7 @@ public class LoginUI
 		} catch (VersionError e)
 		{
 			logger.log(Level.INFO, e.getMessage(), e);
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Version Mismatch", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

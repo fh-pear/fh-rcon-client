@@ -44,8 +44,11 @@ public class ForgottenHeroesRconClient
 		IconLoader.init();
 		if (System.getProperty("os.name").startsWith("Mac"))
 		{
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Forgotten Heroes RCon");
+			//System.setProperty("apple.awt.application.name", "Forgotten Heroes RCon");
+
 			Application application = Application.getApplication();
-			Image image = Toolkit.getDefaultToolkit().getImage("icon.png");
 			application.setDockIconImage(IconLoader.get32());
 		}
 
