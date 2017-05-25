@@ -35,6 +35,7 @@ public class PlayerDetails
 			penaltiesPanel();
 
 			frame.pack();
+			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 		} catch (ArrayIndexOutOfBoundsException e)
 		{
@@ -61,7 +62,10 @@ public class PlayerDetails
 			aliasPanel();
 			penaltiesPanel();
 
+			frame.setTitle(frame.getTitle() + name.getText());
+
 			frame.pack();
+			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 		} catch (ArrayIndexOutOfBoundsException e)
 		{
@@ -284,9 +288,9 @@ public class PlayerDetails
 
 		TableColumnModel tcm = table.getColumnModel();
 		tcm.getColumn(0).setPreferredWidth(50);
-		tcm.getColumn(1).setPreferredWidth(190);
+		tcm.getColumn(1).setPreferredWidth(220);
 		tcm.getColumn(2).setPreferredWidth(160);
-		tcm.getColumn(3).setPreferredWidth(50);
+		tcm.getColumn(3).setPreferredWidth(20);
 		//tcm.getColumn(4).setPreferredWidth(100);
 
 		String[] penaltyLines = str.split("\n");
