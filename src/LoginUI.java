@@ -32,10 +32,10 @@ public class LoginUI
 		init();
 
 		frame.setPreferredSize(new Dimension(500, 150));
-		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.pack();
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
 		if (!PasswordManagement.getPassword().equals("") && !NetProtocol.previousLogin())
