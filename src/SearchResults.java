@@ -130,10 +130,10 @@ public class SearchResults
 		{
 			if (e.getSource() == submit)
 			{
-				int rowi = table.getSelectedRow();
+				int rowi = table.convertRowIndexToModel(table.getSelectedRow());
 				if (rowi >= 0)
 				{
-					new PlayerDetails(dtm.getClientResult(table.getSelectedRow()).getStringDatabaseid());
+					new PlayerDetails(dtm.getClientResult(rowi).getStringDatabaseid());
 					frame.dispose();
 					root.dispose();
 				}
