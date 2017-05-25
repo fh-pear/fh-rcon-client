@@ -194,6 +194,13 @@ public final class NetProtocol
 		//<id>:<name>:<guid>:<connections>:<level (String title)>:<level (int value)>
 	}
 
+	public static String searchForClient(String search, String type)
+	{
+		String command = "search" + UNIT_SEPARATOR + type + UNIT_SEPARATOR + search;
+
+		return send(command);
+	}
+
 	public static String changePassword(String curr, String newPass)
 	{
 		String command = "changepassword" + UNIT_SEPARATOR + curr + UNIT_SEPARATOR + newPass;

@@ -27,13 +27,24 @@ public class PlayerDetails
 		frame = new JFrame("Player Details: " + c.getName());
 		frameSetup();
 
-		init(); //this will get the databaseid
-		topPanel();
-		aliasPanel();
-		penaltiesPanel();
+		try
+		{
+			init(); //this will get the databaseid
+			topPanel();
+			aliasPanel();
+			penaltiesPanel();
 
-		frame.pack();
-		frame.setVisible(true);
+			frame.pack();
+			frame.setVisible(true);
+		} catch (ArrayIndexOutOfBoundsException e)
+		{
+			JOptionPane.showMessageDialog(null,
+					"It appears there is not a database entry for " + c.getName() + " yet",
+					"No Database Record Found",
+					JOptionPane.ERROR_MESSAGE);
+
+			frame.dispose();
+		}
 	}
 
 	public PlayerDetails(String clientid)
@@ -44,12 +55,23 @@ public class PlayerDetails
 		databaseId = clientid;
 		databaseId = databaseId.trim();
 
-		topPanel();
-		aliasPanel();
-		penaltiesPanel();
+		try
+		{
+			topPanel();
+			aliasPanel();
+			penaltiesPanel();
 
-		frame.pack();
-		frame.setVisible(true);
+			frame.pack();
+			frame.setVisible(true);
+		} catch (ArrayIndexOutOfBoundsException e)
+		{
+			JOptionPane.showMessageDialog(null,
+					"It appears there is not a database entry for @" + clientid + " yet",
+					"No Database Record Found",
+					JOptionPane.ERROR_MESSAGE);
+
+			frame.dispose();
+		}
 	}
 
 	private void frameSetup()
