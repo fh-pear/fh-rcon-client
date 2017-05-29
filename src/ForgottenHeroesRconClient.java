@@ -5,12 +5,6 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-import java.awt.Toolkit;
-
-import com.apple.eawt.Application;
-
-import java.awt.Image;
-
 
 public class ForgottenHeroesRconClient
 {
@@ -23,7 +17,7 @@ public class ForgottenHeroesRconClient
 			LogManager.getLogManager().readConfiguration(in);
 		} catch (IOException ex)
 		{
-			Logger.getLogger(ForgottenHeroesRconClient.class.getName()).log(Level.SEVERE, null, ex);
+			logger.log(Level.SEVERE, null, ex);
 		}
 
 		try
@@ -46,10 +40,6 @@ public class ForgottenHeroesRconClient
 		{
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Forgotten Heroes RCon");
-			//System.setProperty("apple.awt.application.name", "Forgotten Heroes RCon");
-
-			Application application = Application.getApplication();
-			application.setDockIconImage(IconLoader.get32());
 		}
 
 		//System.setProperty("java.util.logging.SimpleFormatter.format", Config.getLoggingFormat());
