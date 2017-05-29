@@ -51,9 +51,9 @@ public class SearchResults
 		resultsPanel.setBorder(BorderFactory.createTitledBorder("Results - " + dtm.getRowCount() + " total"));
 
 		frame.setMinimumSize(new Dimension(920, 400));
+                frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		frame.pack();
 	}
 
 	private void setupButtons()
@@ -102,9 +102,9 @@ public class SearchResults
 		tcm.getColumn(0).setMinWidth(150);
 		tcm.getColumn(1).setMinWidth(70);
 		if (Integer.parseInt(Profile.getLevel()) < 90)
-			tcm.getColumn(2).setMinWidth(150);
+                    tcm.getColumn(2).setMinWidth(150);
 		else
-			tcm.getColumn(2).setMinWidth(300);
+                    tcm.getColumn(2).setMinWidth(300);
 
 		tcm.getColumn(3).setMinWidth(200);
 		tcm.getColumn(4).setMinWidth(200);
