@@ -56,6 +56,7 @@ public class MainWindow
 		mapLabel = new JLabel();
 		mapPanel = new JPanel();
 		serverInfo = new JPanel();
+                serverInfo.setLayout(new GridLayout(1,1));
 		mapPanel.setLayout(new BorderLayout());
 
 		createMenuBar();
@@ -193,7 +194,7 @@ public class MainWindow
 		currentMap = new JLabel();
 
 		mapPanel.add(mapLabel, BorderLayout.CENTER);
-                JTextArea jta = new JTextArea(NetProtocol.getServerInfo(), 10, 12);
+                JTextArea jta = new JTextArea(NetProtocol.getServerInfo(), 9, 12);
                 JScrollPane sp = new JScrollPane(jta);
                 serverInfo.add(sp);
 		mapPanel.add(currentMap, BorderLayout.NORTH);
@@ -232,7 +233,7 @@ public class MainWindow
 	private void tablePanel()
 	{
 		centerPanel = new JPanel();
-		centerPanel.setPreferredSize(new Dimension(520, 600));
+		//centerPanel.setPreferredSize(new Dimension(520, 600));
 		centerPanel.setLayout(new GridLayout(1, 1));
 
 		frame.add(centerPanel, BorderLayout.CENTER);
