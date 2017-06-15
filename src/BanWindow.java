@@ -1,17 +1,20 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class BanWindow extends JFrame
+public class BanWindow
 {
 	private JFrame frame;
 	private Client c;
 	private JLabel name, guidLabel, reason;
 	private JTextField nameField, guidField, reasonField;
 	private JButton ban, cancel;
+	private JPanel main, labels, input, buttons, buttonPanel;
+
 	private Logger logger = Logger.getLogger(BanWindow.class.getName());
 
 	public BanWindow(Client cl)
@@ -20,13 +23,11 @@ public class BanWindow extends JFrame
 
 		frame = new JFrame("Ban Client: " + c.getName());
 		frame.setIconImages(IconLoader.getList());
-		frame.setLayout(null);
-		frame.setSize(400, 250);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		init();
 		addListeners();
-		pack();
+		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 
@@ -35,47 +36,57 @@ public class BanWindow extends JFrame
 
 	public void init()
 	{
-		//double width = frame.getWidth() - 20;
+		main = new JPanel();
+		main.setLayout(new BorderLayout(5, 5));
+		labels = new JPanel();
+		GridLayout grid = new GridLayout(4, 1);
+		labels.setLayout(grid);
+		input = new JPanel();
+		input.setLayout(grid);
+		buttons = new JPanel();
+		buttonPanel = new JPanel();
+		frame.add(main);
+		main.add(labels, BorderLayout.WEST);
+		main.add(input, BorderLayout.CENTER);
+		main.add(buttonPanel, BorderLayout.SOUTH);
+
 		name = new JLabel("Name: ");
-		name.setBounds(10, 10, 60, 25);
 
 		nameField = new JTextField(c.getName());
-		nameField.setBackground(null);
 		nameField.setBorder(null);
+		nameField.setBackground(null);
 		nameField.setEditable(false);
-		nameField.setBounds(80, 10, 270, 25);
 
 		guidLabel = new JLabel("GUID: ");
-		guidLabel.setBounds(10, 45, 60, 25);
-
 		guidField = new JTextField(c.getGuid());
-		guidField.setBackground(null);
 		guidField.setBorder(null);
+		guidField.setBackground(null);
 		guidField.setEditable(false);
-		guidField.setBounds(80, 45, 270, 25);
 
 		reason = new JLabel("Reason: ");
-		reason.setBounds(10, 100, 60, 25);
-
-		reasonField = new JTextField();
-		reasonField.setBounds(80, 100, 270, 25);
+		reasonField = new JTextField(20);
 
 		ban = new JButton("Ban");
-		ban.setBounds(100, 150, 200, 25);
 		ban.setMnemonic(KeyEvent.VK_B);
 
 		cancel = new JButton("Cancel");
-		cancel.setBounds(100, 185, 200, 25);
 		cancel.setMnemonic(KeyEvent.VK_C);
 
-		frame.add(name);
-		frame.add(nameField);
-		frame.add(guidLabel);
-		frame.add(guidField);
-		frame.add(reason);
-		frame.add(reasonField);
-		frame.add(ban);
-		frame.add(cancel);
+
+		labels.add(name);
+		labels.add(guidLabel);
+		labels.add(new JLabel());
+		labels.add(reason);
+
+		input.add(nameField);
+		input.add(guidField);
+		input.add(new JLabel());
+		input.add(reasonField);
+
+		buttons.setLayout(new GridLayout(1, 2, 5, 5));
+		buttons.add(ban);
+		buttons.add(cancel);
+		buttonPanel.add(buttons);
 	}
 
 	public void addListeners()

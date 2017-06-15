@@ -1,11 +1,12 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 
-public class TempBanWindow extends JFrame
+public class TempBanWindow
 {
 	private JFrame frame;
 	private Client c;
@@ -13,6 +14,9 @@ public class TempBanWindow extends JFrame
 	private JTextField nameField, guidField, reasonField, durationField;
 	private JButton kick, cancel;
 	private JComboBox<String> durationUnit;
+	private JPanel main, labels, input, buttons, buttonPanel, selectionPanel, reasonPanel;
+
+	private int durationLength = 8;
 
 	private Logger logger = Logger.getLogger(TempBanWindow.class.getName());
 
@@ -22,13 +26,11 @@ public class TempBanWindow extends JFrame
 
 		frame = new JFrame("TempBan Client: " + c.getName());
 		frame.setIconImages(IconLoader.getList());
-		frame.setLayout(null);
-		frame.setSize(400, 250);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		init();
 		addListeners();
-		pack();
+		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 
@@ -37,61 +39,70 @@ public class TempBanWindow extends JFrame
 
 	public void init()
 	{
-		//double width = frame.getWidth() - 20;
+		main = new JPanel();
+		main.setLayout(new BorderLayout(5, 5));
+		labels = new JPanel();
+		GridLayout grid = new GridLayout(4, 1);
+		labels.setLayout(grid);
+		input = new JPanel();
+		input.setLayout(grid);
+		buttons = new JPanel();
+		buttonPanel = new JPanel();
+		frame.add(main);
+		main.add(labels, BorderLayout.WEST);
+		main.add(input, BorderLayout.CENTER);
+		main.add(buttonPanel, BorderLayout.SOUTH);
+
 		name = new JLabel("Name: ");
-		name.setBounds(10, 10, 70, 25);
 
 		nameField = new JTextField(c.getName());
-		nameField.setBackground(null);
 		nameField.setBorder(null);
+		nameField.setBackground(null);
 		nameField.setEditable(false);
-		nameField.setBounds(80, 10, 270, 25);
 
 		guidLabel = new JLabel("GUID: ");
-		guidLabel.setBounds(10, 45, 70, 25);
-
 		guidField = new JTextField(c.getGuid());
-		guidField.setBackground(null);
 		guidField.setBorder(null);
+		guidField.setBackground(null);
 		guidField.setEditable(false);
-		guidField.setBounds(80, 45, 270, 25);
 
+		reasonPanel = new JPanel();
 		reason = new JLabel("Reason: ");
-		reason.setBounds(10, 80, 70, 25);
-
-		reasonField = new JTextField();
-		reasonField.setBounds(80, 80, 270, 25);
+		reasonField = new JTextField(20);
+		reasonPanel.add(reasonField);
 
 		duration = new JLabel("Duration: ");
-		duration.setBounds(10, 115, 70, 25);
-
-		durationField = new JTextField("30");
-		durationField.setBounds(80, 115, 110, 25);
+		durationField = new JTextField(10);
+		durationField.setText("30");
 
 		String[] array = {"Seconds", "Minutes", "Hours", "Days", "Weeks", "Years"};
 		durationUnit = new JComboBox<String>(array);
 		durationUnit.setSelectedItem("Minutes");
-		durationUnit.setBounds(195, 115, 155, 25);
+		selectionPanel = new JPanel();
+		selectionPanel.add(durationField);
+		selectionPanel.add(durationUnit);
 
 		kick = new JButton("Temp Ban");
-		kick.setBounds(100, 150, 200, 25);
 		kick.setMnemonic(KeyEvent.VK_T);
 
 		cancel = new JButton("Cancel");
-		cancel.setBounds(100, 185, 200, 25);
 		cancel.setMnemonic(KeyEvent.VK_C);
 
-		frame.add(name);
-		frame.add(nameField);
-		frame.add(guidLabel);
-		frame.add(guidField);
-		frame.add(reason);
-		frame.add(reasonField);
-		frame.add(duration);
-		frame.add(durationField);
-		frame.add(durationUnit);
-		frame.add(kick);
-		frame.add(cancel);
+
+		labels.add(name);
+		labels.add(guidLabel);
+		labels.add(reason);
+		labels.add(duration);
+
+		input.add(nameField);
+		input.add(guidField);
+		input.add(reasonPanel);
+		input.add(selectionPanel);
+
+		buttons.setLayout(new GridLayout(1, 2, 5, 5));
+		buttons.add(kick);
+		buttons.add(cancel);
+		buttonPanel.add(buttons);
 	}
 
 	public void addListeners()
@@ -99,6 +110,7 @@ public class TempBanWindow extends JFrame
 		kick.addActionListener(new TempBanListener());
 		cancel.addActionListener(new TempBanListener());
 		durationField.addKeyListener(new TempBanListener());
+		durationUnit.addActionListener(new TempBanListener());
 	}
 
 	private class TempBanListener extends KeyAdapter implements ActionListener
@@ -119,11 +131,28 @@ public class TempBanWindow extends JFrame
 				frame.dispose();
 				System.gc();
 			}
+			//TODO: check length of duration string and cut string if need be
+			if (e.getSource() == durationUnit)
+			{
+				if (durationUnit.getSelectedItem().equals("Seconds"))
+					durationLength = 10;
+				else if (durationUnit.getSelectedItem().equals("Minutes"))
+					durationLength = 8;
+				else if (durationUnit.getSelectedItem().equals("Hours"))
+					durationLength = 6;
+				else if (durationUnit.getSelectedItem().equals("Days"))
+					durationLength = 5;
+				else if (durationUnit.getSelectedItem().equals("Weeks"))
+					durationLength = 4;
+				else
+					durationLength = 2;
+
+			}
 		}
 
 		public void keyTyped(KeyEvent e)
 		{
-			if (durationField.getText().length() >= 3) // limit textfield to 8 characters
+			if (durationField.getText().length() >= durationLength) // limit textfield to 8 characters
 				e.consume();
 		}
 	}
