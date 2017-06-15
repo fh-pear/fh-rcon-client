@@ -194,7 +194,9 @@ public class MainWindow
 		currentMap = new JLabel();
 
 		mapPanel.add(mapLabel, BorderLayout.CENTER);
-                JTextArea jta = new JTextArea(NetProtocol.getServerInfo(), 9, 12);
+                JTextArea jta = new JTextArea(Function.formatServerInfo(NetProtocol.getServerInfo()));
+                jta.setFont(new Font(Font.MONOSPACED, Font.PLAIN, jta.getFont().getSize() - 4));
+                jta.setEditable(false);
                 JScrollPane sp = new JScrollPane(jta);
                 serverInfo.add(sp);
 		mapPanel.add(currentMap, BorderLayout.NORTH);

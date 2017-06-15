@@ -66,7 +66,8 @@ public class RconConsole {
 
     public void outputPanel() {
         main.add(outputPanel, BorderLayout.CENTER);
-        console = new JTextArea(20, 70);
+        console = new JTextArea(20, 110);
+        console.setFont(new Font(Font.MONOSPACED, Font.PLAIN, console.getFont().getSize()));
         console.setEditable(false);
         JScrollPane sp = new JScrollPane(console);
 

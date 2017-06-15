@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Arrays;
 
 /**
  * static service function class
@@ -113,6 +114,24 @@ public class Function {
         if (match.find())
             str = match.group();
         
+        
+        return replaceColorCodes(str);
+    }
+    
+    public static String formatServerInfo(String str) {
+        str = str.replaceAll("[\\s&&[^\\n]]+", " ");
+        String split[] = str.split("\n");
+        
+        for (int i = 1; i < split.length; i++) { //don't process first line
+            
+            if ( i == 2 || i == 9)
+                split[i] = split[i].substring(0, split[i].length() - 1) + ": " 
+                        + split[i].substring(split[i].length() - 1, split[i].length());
+            else
+                split[i] = split[i].replaceFirst("\\s", ": ");
+        }
+        
+        str = String.join("\n", split);
         
         return replaceColorCodes(str);
     }
