@@ -21,9 +21,9 @@ public class MainWindow
 {
 	private JFrame frame;
 	private JPanel eastPanel, westPanel, centerPanel, southPanel, east1, east2, east3, mapButtons, messages, mapPanel, serverInfo;
-	private JMenuItem menuExit, menuLogout, searchForPlayer, myProfile;
+	private JMenuItem menuExit, menuLogout, searchForPlayer, myProfile, rcon;
 	private JMenuBar menubar;
-	private JMenu file, search;
+	private JMenu file, search, admin;
 	private JTable table;
 	private JLabel action;
 	private ClientTableModel dtm;
@@ -113,6 +113,12 @@ public class MainWindow
 		searchForPlayer.setToolTipText("Search for a player in the b3 database");
 		search.add(searchForPlayer);
 		menubar.add(search);
+                
+                admin = new JMenu("Admin");
+                rcon = new JMenuItem("RCon Console");
+                rcon.setToolTipText("Custom RCon console for direct server interaction by high level admins");
+                admin.add(rcon);
+                menubar.add(admin);
 
 
 		menubar.setVisible(true);
@@ -295,6 +301,7 @@ public class MainWindow
 
 	private void implementListeners()
 	{
+                rcon.addActionListener(new MainWindowListener());
 		myProfile.addActionListener(new MainWindowListener());
 		menuExit.addActionListener(new MainWindowListener());
 		menuLogout.addActionListener(new MainWindowListener());
@@ -397,6 +404,10 @@ public class MainWindow
 					new BanWindow(dtm.getClient(table.getSelectedRow()));
 				}
 			}
+                        if (e.getSource() == rcon)
+                        {
+                            new RconConsole();
+                        }
 		}
 	}
 

@@ -208,6 +208,12 @@ public final class NetProtocol
 
 		return send(command);
 	}
+        
+        public static String sendPlainRcon(String rcon) {
+            String command = "rcon" + UNIT_SEPARATOR + rcon;
+            
+            return send(command);
+        }
 
 	public static String getMap()
 	{
