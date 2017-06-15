@@ -172,9 +172,10 @@ public final class NetProtocol
 		return send(command);
 	}
 
-	public static String tempBan(String cid, String shortGuid, String duration, String reason)
+	public static String tempBan(String cid, String shortGuid, String sec, String reason, String duration)
 	{
-		String command = "kick" + UNIT_SEPARATOR + cid + UNIT_SEPARATOR + shortGuid + UNIT_SEPARATOR + duration + UNIT_SEPARATOR + reason;
+		String command = "tempban" + UNIT_SEPARATOR + cid + UNIT_SEPARATOR + shortGuid 
+                        + UNIT_SEPARATOR + sec + UNIT_SEPARATOR + reason + UNIT_SEPARATOR + duration;
 
 		return send(command);
 	}

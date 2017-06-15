@@ -141,4 +141,45 @@ public class Function {
         
         return str;
     }
+    
+    public static long minutesToSeconds(long min) {
+        return min * 60;
+    }
+    
+    public static long secondsToMinutes(long seconds) {
+        return seconds / 60;
+    }
+    
+    public static long hoursToSeconds(long hours) {
+        return minutesToSeconds(hours * 60);
+    }
+    
+    public static long hoursToMinutes(long hours) {
+        return hours * 60;
+    }
+    
+    public static long daysToSeconds(long days) {
+        return hoursToSeconds(days * 24);
+    }
+    
+    public static long daysToMinutes(long days) {
+        return days * 24 * 60;
+    }
+    
+    public static long weeksToSeconds(long weeks) {
+        return daysToSeconds(weeks * 7);
+    }
+    
+    public static long weeksToMinutes(long weeks) {
+        return weeks * 7 * 24 * 60;
+    }
+    
+    public static long yearsToSeconds(long years) {
+        return weeksToSeconds(years * 52);
+    }
+    
+    public static long yearsToMinutes(long years) {
+        return years * 52 * 7 * 24 * 60;
+    }
+    
 }
