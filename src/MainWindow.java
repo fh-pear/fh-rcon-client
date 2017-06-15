@@ -158,7 +158,6 @@ public class MainWindow
 		tempban = new JButton("TempBan");
 		tempban.setToolTipText("Temporarily ban the currently selected client");
 		tempban.setMnemonic(KeyEvent.VK_T);
-		tempban.setEnabled(false);
 
 		ban = new JButton("Ban");
 		ban.setToolTipText("Permanently ban the currently selected client");
