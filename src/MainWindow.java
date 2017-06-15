@@ -46,18 +46,17 @@ public class MainWindow
 		frame.setLayout(bl);
 
 		init();
+                frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		frame.pack();
 	}
 
 	public void init()
 	{
 		mapLabel = new JLabel();
 		mapPanel = new JPanel();
-		mapPanel.setLayout(new GridLayout(1, 1));
 		serverInfo = new JPanel();
-		mapPanel.setLayout(new GridLayout(1, 1));
+		mapPanel.setLayout(new BorderLayout());
 
 		createMenuBar();
 		//westPanel();
@@ -82,7 +81,7 @@ public class MainWindow
 	private void westPanel()
 	{
 		westPanel = new JPanel();
-		westPanel.setPreferredSize(new Dimension(30, 600));
+		//westPanel.setPreferredSize(new Dimension(30, 600));
 		frame.add(westPanel);
 	}
 
@@ -145,7 +144,6 @@ public class MainWindow
 
 		mapRotate = new JButton("Map Rotate");
 		mapRotate.setToolTipText("Rotate to the next map in the server rotation");
-		mapRotate.setEnabled(false);
 
 		kick = new JButton("Kick");
 		kick.setToolTipText("Kick the currently selected client");
@@ -165,7 +163,7 @@ public class MainWindow
 		east1.setBorder(BorderFactory.createTitledBorder("Tasks"));
 		east1.setLayout(new GridLayout(4, 1));
 		east2 = new JPanel();
-		east2.setBorder(BorderFactory.createTitledBorder("Server Info"));
+		east2.setBorder(BorderFactory.createTitledBorder("Server Info: " + NetProtocol.getServerName()));
 		east2.setLayout(new GridLayout(4, 1));
 		east3 = new JPanel();
 		east3.setBorder(BorderFactory.createTitledBorder("Penalties"));
@@ -187,10 +185,13 @@ public class MainWindow
 		east1.add(mapButtons);
 
 		east2.setLayout(new GridLayout(1, 2));
-		currentMap = new JLabel("Map: " + NetProtocol.map);
+		currentMap = new JLabel();
 
-		mapPanel.add(mapLabel);
-		serverInfo.add(currentMap);
+		mapPanel.add(mapLabel, BorderLayout.CENTER);
+                JTextArea jta = new JTextArea(NetProtocol.getServerInfo(), 10, 12);
+                JScrollPane sp = new JScrollPane(jta);
+                serverInfo.add(sp);
+		mapPanel.add(currentMap, BorderLayout.NORTH);
 
 		east2.add(serverInfo);
 		east2.add(mapPanel);
@@ -209,7 +210,7 @@ public class MainWindow
 	{
 		try
 		{
-			String fileLocation = Config.getMaps() + NetProtocol.map + ".jpg";
+			String fileLocation = Config.getMaps() + NetProtocol.getMap() + ".jpg";
 			logger.log(Level.INFO, "Setting location for map image: " + fileLocation);
 
 			mapFile = Config.class.getResourceAsStream(fileLocation);
@@ -261,6 +262,7 @@ public class MainWindow
 
 		ArrayList<Client> c = new ArrayList<Client>(NetProtocol.getStatus());
 		map();
+                currentMap.setText("Map: " + NetProtocol.map);
 
 
 		for (int i = 0; i < c.size(); i++)
@@ -365,7 +367,7 @@ public class MainWindow
 			}
 			if (e.getSource() == mapRotate)
 			{
-				JOptionPane.showMessageDialog(null, NetProtocol.mapRotate("map_rotate"));
+				new MapRotateResults(null, NetProtocol.mapRotate("map_rotate"));
 			}
 			if (e.getSource() == mapButton)
 			{
