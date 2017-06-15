@@ -209,17 +209,29 @@ public final class NetProtocol
 		return send(command);
 	}
 
-	public static void getMap()
+	public static String getMap()
 	{
 		map = send("getmap");
-		map = map.replace("\n", "");
+		map = Function.extractMapName(map);
+                
+                return map;
 	}
+        
+        public static String getServerName() {
+            return Function.extractServerName(send("servername"));
+        }
+        
+        public static String getServerInfo() {
+            String str = send("serverinfo");
+            str = str.replaceAll("sv_", "");
+            str = str.replaceAll("g_", "");
+            return str;
+        }
 
 	public static ArrayList<Client> getStatus()
 	{
 		String inputLine;
 		clients.clear();
-		getMap();
 
 		try
 		{

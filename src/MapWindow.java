@@ -1,3 +1,4 @@
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -11,245 +12,232 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MapWindow
-{
-	private JFrame frame;
-	private JScrollPane jsp;
-	private JPanel northPanel, westPanel, eastPanel, southPanel, innerSPanel1, innerSPanel2;
-	private JTextField customMapField;
-	private JLabel customMap, mapLabel;
-	private JButton submit, cancel;
-	private JList<String> mapOptions;
-	private JRadioButton normal, custom;
-	private ButtonGroup group;
+public class MapWindow {
 
-	private InputStream mapFile;
-	private BufferedImage map;
+    private JFrame frame;
+    private JScrollPane jsp;
+    private JPanel northPanel, westPanel, eastPanel, southPanel, innerSPanel1, innerSPanel2;
+    private JTextField customMapField;
+    private JLabel customMap, mapLabel;
+    private JButton submit, cancel;
+    private JList<String> mapOptions;
+    private JRadioButton normal, custom;
+    private ButtonGroup group;
 
-	private Logger logger = Logger.getLogger(MapWindow.class.getName());
+    private InputStream mapFile;
+    private BufferedImage map;
 
-	public MapWindow()
-	{
-		frame = new JFrame("Map Selection: ");
-		frame.setIconImages(IconLoader.getList());
-		frame.setLayout(new BorderLayout());
-		init();
+    private Logger logger = Logger.getLogger(MapWindow.class.getName());
 
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-	}
+    public MapWindow() {
+        frame = new JFrame("Map Selection: ");
+        frame.setIconImages(IconLoader.getList());
+        frame.setLayout(new BorderLayout());
+        init();
 
-	public void init()
-	{
-		mapLabel = new JLabel();
-		northPanel();
-		//eastPanel();
-		westPanel();
-		southPanel();
-		eastPanel();
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
 
-		implementListeners();
-	}
+    public void init() {
+        mapLabel = new JLabel();
+        northPanel();
+        //eastPanel();
+        westPanel();
+        southPanel();
+        eastPanel();
 
-	private void map(String mapName)
-	{
-		try
-		{
-			String fileLocation = Config.getMaps() + mapName + ".jpg";
-			logger.log(Level.FINE, "Using " + fileLocation + " for mapfile image location");
-			mapFile = Config.class.getResourceAsStream(fileLocation);
+        implementListeners();
+    }
 
-			map = ImageIO.read(mapFile);
+    private void map(String mapName) {
+        try {
+            String fileLocation = Config.getMaps() + mapName + ".jpg";
+            logger.log(Level.FINE, "Using " + fileLocation + " for mapfile image location");
+            mapFile = Config.class.getResourceAsStream(fileLocation);
 
-			mapLabel.setIcon(new ImageIcon(map.getScaledInstance(400, 225, Image.SCALE_SMOOTH)));
+            map = ImageIO.read(mapFile);
 
-		} catch (IOException e)
-		{
-			logger.log(Level.WARNING, "Error fetching map file: " + e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error fetching map file: " + e.getMessage(), "ERROR: Couldn't fetch map File", JOptionPane.ERROR_MESSAGE);
-		}
-	}
+            mapLabel.setIcon(new ImageIcon(map.getScaledInstance(400, 225, Image.SCALE_SMOOTH)));
 
-	public void northPanel()
-	{
-		northPanel = new JPanel();
-		group = new ButtonGroup();
+        } catch (IOException e) {
+            logger.log(Level.WARNING, "Error fetching map file: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error fetching map file: " + e.getMessage(), "ERROR: Couldn't fetch map File", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
-		normal = new JRadioButton("Default Maps");
-		normal.setSelected(true);
-		custom = new JRadioButton("Custom Map");
+    public void northPanel() {
+        northPanel = new JPanel();
+        group = new ButtonGroup();
 
-		group.add(normal);
-		group.add(custom);
+        normal = new JRadioButton("Default Maps");
+        normal.setSelected(true);
+        custom = new JRadioButton("Custom Map");
 
-		northPanel.add(normal);
-		northPanel.add(custom);
+        group.add(normal);
+        group.add(custom);
 
-		frame.add(northPanel, BorderLayout.NORTH);
-	}
+        northPanel.add(normal);
+        northPanel.add(custom);
 
-	public void eastPanel()
-	{
-		eastPanel = new JPanel();
-		eastPanel.add(mapLabel);
+        frame.add(northPanel, BorderLayout.NORTH);
+    }
 
-		frame.add(eastPanel, BorderLayout.EAST);
-	}
+    public void eastPanel() {
+        eastPanel = new JPanel();
+        eastPanel.add(mapLabel);
 
-	public void westPanel()
-	{
-		westPanel = new JPanel();
-		westPanel.setLayout(new GridLayout(1, 1));
+        frame.add(eastPanel, BorderLayout.EAST);
+    }
 
-		String[] maps = {"Ambush", "Backlot", "Bloc", "Bog", "Broadcast",
-				"Chinatown", "Countdown", "Crash", "Creek", "Crossfire",
-				"District", "Downpour", "Killhouse", "Overgrown",
-				"Pipeline", "Shipment", "Showdown", "Strike",
-				"Vacant", "Wet Work", "Winter Crash"};
+    public void westPanel() {
+        westPanel = new JPanel();
+        westPanel.setLayout(new GridLayout(1, 1));
 
-		mapOptions = new JList<String>(maps);
-		mapOptions.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		mapOptions.setSelectedIndex(0);
-		map(getMapName(mapOptions.getSelectedValue()));
-		jsp = new JScrollPane(mapOptions);
-		westPanel.add(jsp);
+        String[] maps = {"Ambush", "Backlot", "Bloc", "Bog", "Broadcast",
+            "Chinatown", "Countdown", "Crash", "Creek", "Crossfire",
+            "District", "Downpour", "Killhouse", "Overgrown",
+            "Pipeline", "Shipment", "Showdown", "Strike",
+            "Vacant", "Wet Work", "Winter Crash"};
 
-		frame.add(westPanel, BorderLayout.WEST);
-	}
+        mapOptions = new JList<String>(maps);
+        mapOptions.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        mapOptions.setSelectedIndex(0);
+        map(getMapName(mapOptions.getSelectedValue()));
+        jsp = new JScrollPane(mapOptions);
+        westPanel.add(jsp);
 
-	public void southPanel()
-	{
-		southPanel = new JPanel();
+        frame.add(westPanel, BorderLayout.WEST);
+    }
 
-		innerSPanel1 = new JPanel();
-		innerSPanel1.setBorder(BorderFactory.createTitledBorder("Custom Map Input"));
-		innerSPanel1.setLayout(new GridLayout(2, 1));
-		customMap = new JLabel("Custom map (ex. mp_backlot): ");
-		customMap.setEnabled(false);
-		innerSPanel1.add(customMap);
+    public void southPanel() {
+        southPanel = new JPanel();
 
-		customMapField = new JTextField();
-		customMapField.setEnabled(false);
-		innerSPanel1.add(customMapField);
+        innerSPanel1 = new JPanel();
+        innerSPanel1.setBorder(BorderFactory.createTitledBorder("Custom Map Input"));
+        innerSPanel1.setLayout(new GridLayout(2, 1));
+        customMap = new JLabel("Custom map (ex. mp_backlot): ");
+        customMap.setEnabled(false);
+        innerSPanel1.add(customMap);
 
-		innerSPanel2 = new JPanel();
-		innerSPanel2.setLayout(new GridLayout(2, 1));
+        customMapField = new JTextField();
+        customMapField.setEnabled(false);
+        innerSPanel1.add(customMapField);
 
-		submit = new JButton("Submit");
-		submit.setEnabled(false);
-		innerSPanel2.add(submit);
+        innerSPanel2 = new JPanel();
+        innerSPanel2.setLayout(new GridLayout(2, 1));
 
-		cancel = new JButton("Cancel");
-		innerSPanel2.add(cancel);
+        submit = new JButton("Submit");
+        innerSPanel2.add(submit);
 
-		southPanel.add(innerSPanel1);
-		southPanel.add(innerSPanel2);
-		frame.add(southPanel, BorderLayout.SOUTH);
-	}
+        cancel = new JButton("Cancel");
+        innerSPanel2.add(cancel);
 
-	public void implementListeners()
-	{
-		normal.addActionListener(new MapWindowListener());
-		custom.addActionListener(new MapWindowListener());
-		submit.addActionListener(new MapWindowListener());
-		cancel.addActionListener(new MapWindowListener());
+        southPanel.add(innerSPanel1);
+        southPanel.add(innerSPanel2);
+        frame.add(southPanel, BorderLayout.SOUTH);
+    }
 
-		mapOptions.addListSelectionListener(new MapWindowListener());
-	}
+    public void implementListeners() {
+        normal.addActionListener(new MapWindowListener());
+        custom.addActionListener(new MapWindowListener());
+        submit.addActionListener(new MapWindowListener());
+        cancel.addActionListener(new MapWindowListener());
 
-	private class MapWindowListener implements ActionListener, ListSelectionListener
-	{
-		public void actionPerformed(ActionEvent e)
-		{
-			if (e.getSource() == normal || e.getSource() == custom)
-			{
-				if (custom.isSelected())
-				{
-					mapOptions.clearSelection();
-					mapOptions.setEnabled(false);
+        mapOptions.addListSelectionListener(new MapWindowListener());
+    }
 
-					customMapField.setEnabled(true);
-					customMap.setEnabled(true);
-				} else
-				{
-					mapOptions.setEnabled(true);
+    private class MapWindowListener implements ActionListener, ListSelectionListener {
 
-					customMapField.setText("");
-					customMapField.setEnabled(false);
-					customMap.setEnabled(false);
-				}
-			}
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == normal || e.getSource() == custom) {
+                if (custom.isSelected()) {
+                    mapOptions.clearSelection();
+                    mapOptions.setEnabled(false);
 
-			if (e.getSource() == cancel)
-			{
-				frame.dispose();
-				System.gc();
-			}
-		}
+                    customMapField.setEnabled(true);
+                    customMap.setEnabled(true);
+                } else {
+                    mapOptions.setEnabled(true);
 
-		public void valueChanged(ListSelectionEvent e)
-		{
-			if (e.getSource() == mapOptions)
-			{
-				if (mapOptions.isSelectionEmpty())
-				{
+                    customMapField.setText("");
+                    customMapField.setEnabled(false);
+                    customMap.setEnabled(false);
+                }
+            }
 
-				} else
-				{
-					map(getMapName(mapOptions.getSelectedValue()));
-				}
-			}
+            if (e.getSource() == cancel) {
+                frame.dispose();
+                System.gc();
+            }
 
-			frame.pack();
-		}
-	}
+            if (e.getSource() == submit) {
+                if (customMapField.isEnabled())
+                    new MapRotateResults(frame, NetProtocol.mapRotate(customMapField.getText()));
+                else
+                    new MapRotateResults(frame, NetProtocol.mapRotate(getMapName(mapOptions.getSelectedValue())));
+            }
+        }
 
-	public String getMapName(String mapString)
-	{
-		if (mapString.equals("Ambush"))
-			return "mp_convoy";
-		else if (mapString.equals("Backlot"))
-			return "mp_backlot";
-		else if (mapString.equals("Bloc"))
-			return "mp_bloc";
-		else if (mapString.equals("Bog"))
-			return "mp_bog";
-		else if (mapString.equals("Broadcast"))
-			return "mp_broadcast";
-		else if (mapString.equals("Chinatown"))
-			return "mp_carentan";
-		else if (mapString.equals("Countdown"))
-			return "mp_countdown";
-		else if (mapString.equals("Crash"))
-			return "mp_crash";
-		else if (mapString.equals("Creek"))
-			return "mp_creek";
-		else if (mapString.equals("Crossfire"))
-			return "mp_crossfire";
-		else if (mapString.equals("District"))
-			return "mp_citystreets";
-		else if (mapString.equals("Downpour"))
-			return "mp_farm";
-		else if (mapString.equals("Killhouse"))
-			return "mp_killhouse";
-		else if (mapString.equals("Overgrown"))
-			return "mp_overgrown";
-		else if (mapString.equals("Pipeline"))
-			return "mp_pipeline";
-		else if (mapString.equals("Shipment"))
-			return "mp_shipment";
-		else if (mapString.equals("Showdown"))
-			return "mp_showdown";
-		else if (mapString.equals("Strike"))
-			return "mp_strike";
-		else if (mapString.equals("Vacant"))
-			return "mp_vacant";
-		else if (mapString.equals("Wet Work"))
-			return "mp_cargoship";
-		else if (mapString.equals("Winter Crash"))
-			return "mp_crash_snow";
-		else
-			return "unknown";
-	}
+        public void valueChanged(ListSelectionEvent e) {
+            if (e.getSource() == mapOptions) {
+                if (mapOptions.isSelectionEmpty()) {
+
+                } else {
+                    map(getMapName(mapOptions.getSelectedValue()));
+                }
+            }
+
+            frame.pack();
+        }
+    }
+
+    public String getMapName(String mapString) {
+        if (mapString.equals("Ambush")) {
+            return "mp_convoy";
+        } else if (mapString.equals("Backlot")) {
+            return "mp_backlot";
+        } else if (mapString.equals("Bloc")) {
+            return "mp_bloc";
+        } else if (mapString.equals("Bog")) {
+            return "mp_bog";
+        } else if (mapString.equals("Broadcast")) {
+            return "mp_broadcast";
+        } else if (mapString.equals("Chinatown")) {
+            return "mp_carentan";
+        } else if (mapString.equals("Countdown")) {
+            return "mp_countdown";
+        } else if (mapString.equals("Crash")) {
+            return "mp_crash";
+        } else if (mapString.equals("Creek")) {
+            return "mp_creek";
+        } else if (mapString.equals("Crossfire")) {
+            return "mp_crossfire";
+        } else if (mapString.equals("District")) {
+            return "mp_citystreets";
+        } else if (mapString.equals("Downpour")) {
+            return "mp_farm";
+        } else if (mapString.equals("Killhouse")) {
+            return "mp_killhouse";
+        } else if (mapString.equals("Overgrown")) {
+            return "mp_overgrown";
+        } else if (mapString.equals("Pipeline")) {
+            return "mp_pipeline";
+        } else if (mapString.equals("Shipment")) {
+            return "mp_shipment";
+        } else if (mapString.equals("Showdown")) {
+            return "mp_showdown";
+        } else if (mapString.equals("Strike")) {
+            return "mp_strike";
+        } else if (mapString.equals("Vacant")) {
+            return "mp_vacant";
+        } else if (mapString.equals("Wet Work")) {
+            return "mp_cargoship";
+        } else if (mapString.equals("Winter Crash")) {
+            return "mp_crash_snow";
+        } else {
+            return "unknown";
+        }
+    }
 }
