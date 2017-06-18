@@ -121,6 +121,7 @@ public class Function {
     public static String formatServerInfo(String str) {
         str = str.replaceAll("[\\s&&[^\\n]]+", " ");
         String split[] = str.split("\n");
+        split[0] = "";
         
         for (int i = 1; i < split.length; i++) { //don't process first line
             
@@ -133,7 +134,7 @@ public class Function {
         
         str = String.join("\n", split);
         
-        return replaceColorCodes(str);
+        return replaceColorCodes(str.replaceFirst("\\n", ""));
     }
     
     public static String extractServerName(String str) {
