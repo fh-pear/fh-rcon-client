@@ -30,6 +30,7 @@ public final class NetProtocol
 	private static boolean priorLogin = false;
 	private static ArrayList<Client> clients = new ArrayList<Client>();
 	private static ArrayList<Client> clientBuffer = new ArrayList<Client>();
+        private static ArrayList<B3Level> groups;
 	private static Logger logger = Logger.getLogger(NetProtocol.class.getName());
 
 	public static String map = "";
@@ -115,6 +116,19 @@ public final class NetProtocol
 		logger.log(Level.FINE, "RECEIVED: " + result);
 		return result;
 	}
+        
+        public static void getGroupsFromServer() {
+            String[] results = send("getb3groups").split("\n");
+            groups = new ArrayList(20);
+            
+            for (int i = 0; i < results.length; i++) {
+                groups.add(new B3Level(results[i]));
+            }
+        }
+        
+        public static ArrayList<B3Level> getGroups() {
+            return groups;
+        }
 
 	public static String mapRotate(String mapname)
 	{
@@ -324,7 +338,7 @@ public final class NetProtocol
 			//Logged in. Waiting for command(s)
 			if (input.equals("Verify version"))
 			{
-				//System.out.println("verifying version");
+				logger.log(Level.INFO, "Verifying version: {0}", Version.VERSION);
 				out.println(Version.VERSION);
 
 				String inputVersion, inputV = "";
@@ -360,8 +374,11 @@ public final class NetProtocol
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 
-		if (loggedIn)
+		if (loggedIn) {
 			getStatus();
+                        getGroupsFromServer();
+                }
+                        
 	}
 
 	public static boolean loggedIn()

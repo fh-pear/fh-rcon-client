@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.logging.Logger;
 /*
@@ -16,6 +18,9 @@ public class PlayerDetails
 	private JTable table;
 	private AliasTableModel dtm;
 	private PenaltyTableModel dtm1;
+        private JMenuBar menu;
+        private JMenuItem ban, tempban, addrcon, addclan, penaltyinfo;
+        private JMenu admin, penalties;
 
 	private String databaseId;
 	private Logger logger = Logger.getLogger(PlayerDetails.class.getName());
@@ -82,9 +87,21 @@ public class PlayerDetails
 	{
 		frame.setIconImages(IconLoader.getList());
 		frame.setLayout(new BorderLayout(5, 5));
+                
+                menu = new JMenuBar();
+                admin = new JMenu("Admin");
+                menu.add(admin);
+                
+                addrcon = new JMenuItem("Set b3 Level");
+                addclan = new JMenuItem("Add tagprotect");
+                admin.add(addrcon);
+                
+                
 
 		centerPanel = new JPanel();
 		centerPanel.setLayout(new GridLayout(2, 1));
+                frame.setJMenuBar(menu);
+                menu.setVisible(true);
 		frame.add(centerPanel, BorderLayout.CENTER);
 	}
 
@@ -218,7 +235,7 @@ public class PlayerDetails
 		table.setShowHorizontalLines(true);
 		//table.setShowVerticalLines(true);
 		table.setGridColor(Color.BLACK);
-		table.setPreferredScrollableViewportSize(new Dimension(520, 150));// centerPanel.getPreferredSize());
+		//table.setPreferredScrollableViewportSize(new Dimension(520, 150));// centerPanel.getPreferredSize());
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -275,7 +292,7 @@ public class PlayerDetails
 		table.setShowHorizontalLines(true);
 		//table.setShowVerticalLines(true);
 		table.setGridColor(Color.BLACK);
-		table.setPreferredScrollableViewportSize(new Dimension(520, 150));// centerPanel.getPreferredSize());
+		//table.setPreferredScrollableViewportSize(new Dimension(520, 150));// centerPanel.getPreferredSize());
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		//table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -304,4 +321,18 @@ public class PlayerDetails
 
 		penaltiesPanel.add(new JScrollPane(table));
 	}
+        
+        private void implementListeners() {
+            addrcon.addActionListener(new PlayerDetailsListener());
+        }
+        
+        private class PlayerDetailsListener implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == addrcon) {
+                    
+                }
+            }
+        }
+        
 }
