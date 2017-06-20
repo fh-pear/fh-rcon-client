@@ -9,192 +9,218 @@ import java.util.logging.Logger;
 
 public class LoginUI
 {
-	private JFrame frame;
-	private JLabel warning = new JLabel();
-	private JPanel panel, userPanel, passwordPanel, buttonPanel, rememberPanel;
-	private JButton loginButton;
-	private JPasswordField passwordText;
-	private JTextField userText;
-	private JCheckBox remember;
-	private JComboBox<String> serverSelect;
-	private ImageIcon img;
 
-	private String warningLabel = "You are responsible for actions taken on your account.";
+    private JFrame frame;
+    private JLabel warning = new JLabel();
+    private JPanel panel, userPanel, passwordPanel, buttonPanel, rememberPanel;
+    private JButton loginButton;
+    private JPasswordField passwordText;
+    private JTextField userText;
+    private JCheckBox remember;
+    private JComboBox<String> serverSelect;
+    private ImageIcon img;
 
-	private Logger logger = Logger.getLogger(LoginUI.class.getName());
+    private String warningLabel = "You are responsible for actions taken on your account.";
 
-	public LoginUI()
-	{
-		frame = new JFrame("Forgotten Heroes || Login");
-		frame.setIconImages(IconLoader.getList());
-		PasswordManagement.init();
+    private Logger logger = Logger.getLogger(LoginUI.class.getName());
 
-		init();
+    public LoginUI()
+    {
+        frame = new JFrame("Forgotten Heroes || Login");
+        frame.setIconImages(IconLoader.getList());
+        PasswordManagement.init();
 
-		frame.setPreferredSize(new Dimension(500, 150));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+        init();
 
-		if (!PasswordManagement.getPassword().equals("") && !NetProtocol.previousLogin())
-			login();
+        frame.setPreferredSize(new Dimension(500, 150));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
-	}
+        if (!PasswordManagement.getPassword().equals("") && !NetProtocol.previousLogin())
+        {
+            login();
+        }
 
+    }
 
-	private void init()
-	{
-		panel = new JPanel();
-		userPanel = new JPanel();
-		passwordPanel = new JPanel();
-		buttonPanel = new JPanel();
-		rememberPanel = new JPanel();
-		//panel.setLayout(new GridLayout(4, 1));
-		panel.setLayout(new BorderLayout());
+    private void init()
+    {
+        panel = new JPanel();
+        userPanel = new JPanel();
+        passwordPanel = new JPanel();
+        buttonPanel = new JPanel();
+        rememberPanel = new JPanel();
+        //panel.setLayout(new GridLayout(4, 1));
+        panel.setLayout(new BorderLayout());
 
-		userPanel.setLayout(new GridLayout(2, 1));
-		passwordPanel.setLayout(new GridLayout(2, 1));
+        userPanel.setLayout(new GridLayout(2, 1));
+        passwordPanel.setLayout(new GridLayout(2, 1));
 
-		JLabel userLabel = new JLabel("User: ");
-		userLabel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
-		//userLabel.setBounds(10, 10, 80, 25);
-		userPanel.add(userLabel);
+        JLabel userLabel = new JLabel("User: ");
+        userLabel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
+        //userLabel.setBounds(10, 10, 80, 25);
+        userPanel.add(userLabel);
 
-		userText = new JTextField(20);
-		userText.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-		//userText.setBounds(100, 10, 160, 25);
-		passwordPanel.add(userText);
-		if (PasswordManagement.rememberMe())
-		{
-			userText.setEnabled(false);
-			userText.setText(PasswordManagement.getUserName());
-		}
+        userText = new JTextField(20);
+        userText.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+        //userText.setBounds(100, 10, 160, 25);
+        passwordPanel.add(userText);
+        if (PasswordManagement.rememberMe())
+        {
+            userText.setEnabled(false);
+            userText.setText(PasswordManagement.getUserName());
+        }
 
-		JLabel passwordLabel = new JLabel("Password: ");
-		passwordLabel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
-		//passwordLabel.setBounds(10, 40, 80, 25);
-		userPanel.add(passwordLabel);
+        JLabel passwordLabel = new JLabel("Password: ");
+        passwordLabel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
+        //passwordLabel.setBounds(10, 40, 80, 25);
+        userPanel.add(passwordLabel);
 
-		passwordText = new JPasswordField(20);
-		passwordText.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-		//passwordText.setBounds(100, 40, 160, 25);
-		passwordPanel.add(passwordText);
-		if (PasswordManagement.rememberMe())
-		{
-			passwordText.setEnabled(false);
-			passwordText.setText(PasswordManagement.getPassword());
-		}
-		passwordText.setToolTipText("If 'Remember Me' was enabled last login, this field will be left blank");
+        passwordText = new JPasswordField(20);
+        passwordText.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+        //passwordText.setBounds(100, 40, 160, 25);
+        passwordPanel.add(passwordText);
+        if (PasswordManagement.rememberMe())
+        {
+            passwordText.setEnabled(false);
+            passwordText.setText(PasswordManagement.getPassword());
+        }
+        passwordText.setToolTipText("If 'Remember Me' was enabled last login, this field will be left blank");
 
-		String[] array = {"FFA", "TDM", "Promod", "FFA2"};
-		serverSelect = new JComboBox<String>(array);
-		//serverSelect.setBounds(100, 80, 160, 25);
-		buttonPanel.add(serverSelect);
+        String[] array =
+        {
+            "FFA", "TDM", "Promod", "FFA2"
+        };
+        serverSelect = new JComboBox<String>(array);
+        //serverSelect.setBounds(100, 80, 160, 25);
+        buttonPanel.add(serverSelect);
 
-		loginButton = new JButton("Login");
-		//loginButton.setBounds(10, 80, 80, 25);
-		buttonPanel.add(loginButton);
+        loginButton = new JButton("Login");
+        //loginButton.setBounds(10, 80, 80, 25);
+        buttonPanel.add(loginButton);
 
-		remember = new JCheckBox("Remember Me");
-		remember.setSelected(PasswordManagement.rememberMe());
-		//remember.setBounds(10, 100, 10, 10);
-		rememberPanel.add(remember);
-		rememberPanel.add(warning);
+        remember = new JCheckBox("Remember Me");
+        remember.setSelected(PasswordManagement.rememberMe());
+        //remember.setBounds(10, 100, 10, 10);
+        rememberPanel.add(remember);
+        rememberPanel.add(warning);
 
-		warning.setForeground(Color.RED);
-		if (PasswordManagement.rememberMe())
-			warning.setText(warningLabel);
-		else
-			warning.setText("");
-		JPanel south = new JPanel();
-		south.setLayout(new GridLayout(2, 1));
-		south.add(rememberPanel);
-		south.add(buttonPanel);
+        warning.setForeground(Color.RED);
+        if (PasswordManagement.rememberMe())
+        {
+            warning.setText(warningLabel);
+        }
+        else
+        {
+            warning.setText("");
+        }
+        JPanel south = new JPanel();
+        south.setLayout(new GridLayout(2, 1));
+        south.add(rememberPanel);
+        south.add(buttonPanel);
 
-		panel.add(userPanel, BorderLayout.WEST);
-		panel.add(passwordPanel, BorderLayout.CENTER);
-		panel.add(south, BorderLayout.SOUTH);
+        panel.add(userPanel, BorderLayout.WEST);
+        panel.add(passwordPanel, BorderLayout.CENTER);
+        panel.add(south, BorderLayout.SOUTH);
 
-		frame.add(panel);
+        frame.add(panel);
 
-		loginButton.addActionListener(new LoginListener());
-		loginButton.addKeyListener(new LoginListener());
-		passwordText.addKeyListener(new LoginListener());
-		userText.addKeyListener(new LoginListener());
-		serverSelect.addKeyListener(new LoginListener());
-		remember.addActionListener(new LoginListener());
-		remember.addKeyListener(new LoginListener());
-	}
+        loginButton.addActionListener(new LoginListener());
+        loginButton.addKeyListener(new LoginListener());
+        passwordText.addKeyListener(new LoginListener());
+        userText.addKeyListener(new LoginListener());
+        serverSelect.addKeyListener(new LoginListener());
+        remember.addActionListener(new LoginListener());
+        remember.addKeyListener(new LoginListener());
+    }
 
-	private class LoginListener extends KeyAdapter implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e)
-		{
-			if (e.getSource() == loginButton)
-				login();
-			if (e.getSource() == remember)
-			{
-				if (remember.isSelected())
-				{
-					warning.setText(warningLabel);
-					passwordText.setEnabled(false);
-					userText.setEnabled(false);
-				} else
-				{
-					warning.setText("");
-					passwordText.setText("");
-					passwordText.setEnabled(true);
-					userText.setEnabled(true);
-				}
-			}
-		}
+    private class LoginListener extends KeyAdapter implements ActionListener
+    {
 
-		public void keyPressed(KeyEvent e)
-		{
-			if (e.getKeyCode() == KeyEvent.VK_ENTER)
-				login();
-		}
-	}
+        public void actionPerformed(ActionEvent e)
+        {
+            if (e.getSource() == loginButton)
+            {
+                login();
+            }
+            if (e.getSource() == remember)
+            {
+                if (remember.isSelected())
+                {
+                    warning.setText(warningLabel);
+                    passwordText.setEnabled(false);
+                    userText.setEnabled(false);
+                }
+                else
+                {
+                    warning.setText("");
+                    passwordText.setText("");
+                    passwordText.setEnabled(true);
+                    userText.setEnabled(true);
+                }
+            }
+        }
 
-	private void login()
-	{
+        public void keyPressed(KeyEvent e)
+        {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER)
+            {
+                login();
+            }
+        }
+    }
 
-		if (serverSelect.getSelectedItem().equals("FFA"))
-			NetProtocol.init(1);
-		else if (serverSelect.getSelectedItem().equals("TDM"))
-			NetProtocol.init(2);
-		if (serverSelect.getSelectedItem().equals("Promod"))
-			NetProtocol.init(4);
-		if (serverSelect.getSelectedItem().equals("FFA2"))
-			NetProtocol.init(4);
+    private void login()
+    {
 
-		try
-		{
-			NetProtocol.login(userText.getText(), passwordText.getPassword(), remember.isSelected());
+        if (serverSelect.getSelectedItem().equals("FFA"))
+        {
+            NetProtocol.init(1);
+        }
+        else if (serverSelect.getSelectedItem().equals("TDM"))
+        {
+            NetProtocol.init(2);
+        }
+        if (serverSelect.getSelectedItem().equals("Promod"))
+        {
+            NetProtocol.init(4);
+        }
+        if (serverSelect.getSelectedItem().equals("FFA2"))
+        {
+            NetProtocol.init(4);
+        }
 
-			if (NetProtocol.loggedIn())
-			{
-				//success
-				frame.dispose();
-				new MainWindow();
-				Profile.init();
-			} else if (!NetProtocol.loggedIn() && remember.isSelected())
-			{
-				JOptionPane.showMessageDialog(null,
-						"Did you change your password recently? If so, 'Remember Me' is not up-to-date. Update it now!",
-						"Authentication Failure", JOptionPane.ERROR_MESSAGE);
-			} else
-			{
-				// error, bad password/username etc
-				JOptionPane.showMessageDialog(null, "Incorrect username or password.",
-						"Authentication Failure", JOptionPane.ERROR_MESSAGE);
-			}
-		} catch (VersionError e)
-		{
-			logger.log(Level.INFO, e.getMessage(), e);
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Version Mismatch", JOptionPane.ERROR_MESSAGE);
-		}
-	}
+        try
+        {
+            NetProtocol.login(userText.getText(), passwordText.getPassword(), remember.isSelected());
+
+            if (NetProtocol.loggedIn())
+            {
+                //success
+                frame.dispose();
+                new MainWindow();
+                Profile.init();
+            }
+            else if (!NetProtocol.loggedIn() && remember.isSelected())
+            {
+                JOptionPane.showMessageDialog(null,
+                        "Did you change your password recently? If so, 'Remember Me' is not up-to-date. Update it now!",
+                        "Authentication Failure", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                // error, bad password/username etc
+                JOptionPane.showMessageDialog(null, "Incorrect username or password.",
+                        "Authentication Failure", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        catch (VersionError e)
+        {
+            logger.log(Level.INFO, e.getMessage(), e);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Version Mismatch", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

@@ -1,4 +1,3 @@
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -12,7 +11,8 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MapWindow {
+public class MapWindow
+{
 
     private JFrame frame;
     private JScrollPane jsp;
@@ -29,7 +29,8 @@ public class MapWindow {
 
     private Logger logger = Logger.getLogger(MapWindow.class.getName());
 
-    public MapWindow() {
+    public MapWindow()
+    {
         frame = new JFrame("Map Selection: ");
         frame.setIconImages(IconLoader.getList());
         frame.setLayout(new BorderLayout());
@@ -40,7 +41,8 @@ public class MapWindow {
         frame.setVisible(true);
     }
 
-    public void init() {
+    public void init()
+    {
         mapLabel = new JLabel();
         northPanel();
         //eastPanel();
@@ -51,8 +53,10 @@ public class MapWindow {
         implementListeners();
     }
 
-    private void map(String mapName) {
-        try {
+    private void map(String mapName)
+    {
+        try
+        {
             String fileLocation = Config.getMaps() + mapName + ".jpg";
             logger.log(Level.FINE, "Using " + fileLocation + " for mapfile image location");
             mapFile = Config.class.getResourceAsStream(fileLocation);
@@ -61,13 +65,16 @@ public class MapWindow {
 
             mapLabel.setIcon(new ImageIcon(map.getScaledInstance(400, 225, Image.SCALE_SMOOTH)));
 
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             logger.log(Level.WARNING, "Error fetching map file: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Error fetching map file: " + e.getMessage(), "ERROR: Couldn't fetch map File", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public void northPanel() {
+    public void northPanel()
+    {
         northPanel = new JPanel();
         group = new ButtonGroup();
 
@@ -84,22 +91,27 @@ public class MapWindow {
         frame.add(northPanel, BorderLayout.NORTH);
     }
 
-    public void eastPanel() {
+    public void eastPanel()
+    {
         eastPanel = new JPanel();
         eastPanel.add(mapLabel);
 
         frame.add(eastPanel, BorderLayout.EAST);
     }
 
-    public void westPanel() {
+    public void westPanel()
+    {
         westPanel = new JPanel();
         westPanel.setLayout(new GridLayout(1, 1));
 
-        String[] maps = {"Ambush", "Backlot", "Bloc", "Bog", "Broadcast",
+        String[] maps =
+        {
+            "Ambush", "Backlot", "Bloc", "Bog", "Broadcast",
             "Chinatown", "Countdown", "Crash", "Creek", "Crossfire",
             "District", "Downpour", "Killhouse", "Overgrown",
             "Pipeline", "Shipment", "Showdown", "Strike",
-            "Vacant", "Wet Work", "Winter Crash"};
+            "Vacant", "Wet Work", "Winter Crash"
+        };
 
         mapOptions = new JList<String>(maps);
         mapOptions.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -111,7 +123,8 @@ public class MapWindow {
         frame.add(westPanel, BorderLayout.WEST);
     }
 
-    public void southPanel() {
+    public void southPanel()
+    {
         southPanel = new JPanel();
 
         innerSPanel1 = new JPanel();
@@ -139,7 +152,8 @@ public class MapWindow {
         frame.add(southPanel, BorderLayout.SOUTH);
     }
 
-    public void implementListeners() {
+    public void implementListeners()
+    {
         normal.addActionListener(new MapWindowListener());
         custom.addActionListener(new MapWindowListener());
         submit.addActionListener(new MapWindowListener());
@@ -148,17 +162,23 @@ public class MapWindow {
         mapOptions.addListSelectionListener(new MapWindowListener());
     }
 
-    private class MapWindowListener implements ActionListener, ListSelectionListener {
+    private class MapWindowListener implements ActionListener, ListSelectionListener
+    {
 
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == normal || e.getSource() == custom) {
-                if (custom.isSelected()) {
+        public void actionPerformed(ActionEvent e)
+        {
+            if (e.getSource() == normal || e.getSource() == custom)
+            {
+                if (custom.isSelected())
+                {
                     mapOptions.clearSelection();
                     mapOptions.setEnabled(false);
 
                     customMapField.setEnabled(true);
                     customMap.setEnabled(true);
-                } else {
+                }
+                else
+                {
                     mapOptions.setEnabled(true);
 
                     customMapField.setText("");
@@ -167,24 +187,35 @@ public class MapWindow {
                 }
             }
 
-            if (e.getSource() == cancel) {
+            if (e.getSource() == cancel)
+            {
                 frame.dispose();
                 System.gc();
             }
 
-            if (e.getSource() == submit) {
+            if (e.getSource() == submit)
+            {
                 if (customMapField.isEnabled())
+                {
                     new MapRotateResults(frame, NetProtocol.mapRotate(customMapField.getText()));
+                }
                 else
+                {
                     new MapRotateResults(frame, NetProtocol.mapRotate(getMapName(mapOptions.getSelectedValue())));
+                }
             }
         }
 
-        public void valueChanged(ListSelectionEvent e) {
-            if (e.getSource() == mapOptions) {
-                if (mapOptions.isSelectionEmpty()) {
+        public void valueChanged(ListSelectionEvent e)
+        {
+            if (e.getSource() == mapOptions)
+            {
+                if (mapOptions.isSelectionEmpty())
+                {
 
-                } else {
+                }
+                else
+                {
                     map(getMapName(mapOptions.getSelectedValue()));
                 }
             }
@@ -193,50 +224,94 @@ public class MapWindow {
         }
     }
 
-    public String getMapName(String mapString) {
-        if (mapString.equals("Ambush")) {
+    public String getMapName(String mapString)
+    {
+        if (mapString.equals("Ambush"))
+        {
             return "mp_convoy";
-        } else if (mapString.equals("Backlot")) {
+        }
+        else if (mapString.equals("Backlot"))
+        {
             return "mp_backlot";
-        } else if (mapString.equals("Bloc")) {
+        }
+        else if (mapString.equals("Bloc"))
+        {
             return "mp_bloc";
-        } else if (mapString.equals("Bog")) {
+        }
+        else if (mapString.equals("Bog"))
+        {
             return "mp_bog";
-        } else if (mapString.equals("Broadcast")) {
+        }
+        else if (mapString.equals("Broadcast"))
+        {
             return "mp_broadcast";
-        } else if (mapString.equals("Chinatown")) {
+        }
+        else if (mapString.equals("Chinatown"))
+        {
             return "mp_carentan";
-        } else if (mapString.equals("Countdown")) {
+        }
+        else if (mapString.equals("Countdown"))
+        {
             return "mp_countdown";
-        } else if (mapString.equals("Crash")) {
+        }
+        else if (mapString.equals("Crash"))
+        {
             return "mp_crash";
-        } else if (mapString.equals("Creek")) {
+        }
+        else if (mapString.equals("Creek"))
+        {
             return "mp_creek";
-        } else if (mapString.equals("Crossfire")) {
+        }
+        else if (mapString.equals("Crossfire"))
+        {
             return "mp_crossfire";
-        } else if (mapString.equals("District")) {
+        }
+        else if (mapString.equals("District"))
+        {
             return "mp_citystreets";
-        } else if (mapString.equals("Downpour")) {
+        }
+        else if (mapString.equals("Downpour"))
+        {
             return "mp_farm";
-        } else if (mapString.equals("Killhouse")) {
+        }
+        else if (mapString.equals("Killhouse"))
+        {
             return "mp_killhouse";
-        } else if (mapString.equals("Overgrown")) {
+        }
+        else if (mapString.equals("Overgrown"))
+        {
             return "mp_overgrown";
-        } else if (mapString.equals("Pipeline")) {
+        }
+        else if (mapString.equals("Pipeline"))
+        {
             return "mp_pipeline";
-        } else if (mapString.equals("Shipment")) {
+        }
+        else if (mapString.equals("Shipment"))
+        {
             return "mp_shipment";
-        } else if (mapString.equals("Showdown")) {
+        }
+        else if (mapString.equals("Showdown"))
+        {
             return "mp_showdown";
-        } else if (mapString.equals("Strike")) {
+        }
+        else if (mapString.equals("Strike"))
+        {
             return "mp_strike";
-        } else if (mapString.equals("Vacant")) {
+        }
+        else if (mapString.equals("Vacant"))
+        {
             return "mp_vacant";
-        } else if (mapString.equals("Wet Work")) {
+        }
+        else if (mapString.equals("Wet Work"))
+        {
             return "mp_cargoship";
-        } else if (mapString.equals("Winter Crash")) {
+        }
+        else if (mapString.equals("Winter Crash"))
+        {
             return "mp_crash_snow";
-        } else {
+        }
+        else
+        {
             return "unknown";
         }
     }

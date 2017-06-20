@@ -9,7 +9,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 
-public class RconConsole {
+public class RconConsole
+{
 
     private Logger logger = Logger.getLogger(RconConsole.class.getName());
 
@@ -20,7 +21,8 @@ public class RconConsole {
     private JButton submit, clear;
     private JTextField command;
 
-    public RconConsole() {
+    public RconConsole()
+    {
         frame = new JFrame("RCon Console");
 
         init();
@@ -31,7 +33,8 @@ public class RconConsole {
         frame.setVisible(true);
     }
 
-    public void init() {
+    public void init()
+    {
         main = new JPanel();
         main.setLayout(new BorderLayout());
         frame.add(main);
@@ -46,25 +49,28 @@ public class RconConsole {
 
         implementListeners();
     }
-    
-    public void entryPanel() {
+
+    public void entryPanel()
+    {
         main.add(entryPanel, BorderLayout.SOUTH);
         submit = new JButton("Submit");
         input = new JLabel("Command:");
         command = new JTextField(30);
-        
+
         entryPanel.add(input);
         entryPanel.add(command);
         entryPanel.add(submit);
     }
 
-    public void northPanel() {
+    public void northPanel()
+    {
         main.add(northPanel, BorderLayout.NORTH);
         clear = new JButton("Clear Console");
         northPanel.add(clear);
     }
 
-    public void outputPanel() {
+    public void outputPanel()
+    {
         main.add(outputPanel, BorderLayout.CENTER);
         console = new JTextArea(20, 110);
         console.setFont(new Font(Font.MONOSPACED, Font.PLAIN, console.getFont().getSize()));
@@ -74,32 +80,40 @@ public class RconConsole {
         outputPanel.add(sp);
     }
 
-    private void implementListeners() {
+    private void implementListeners()
+    {
         submit.addActionListener(new RconConsoleListener());
         submit.addKeyListener(new RconConsoleListener());
         command.addKeyListener(new RconConsoleListener());
         clear.addActionListener(new RconConsoleListener());
     }
 
-    private class RconConsoleListener extends KeyAdapter implements ActionListener {
+    private class RconConsoleListener extends KeyAdapter implements ActionListener
+    {
 
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == submit ) {
+        public void actionPerformed(ActionEvent e)
+        {
+            if (e.getSource() == submit)
+            {
                 sendCommand();
             }
-            if (e.getSource() == clear) {
+            if (e.getSource() == clear)
+            {
                 console.setText(null);
             }
         }
 
-        public void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+        public void keyPressed(KeyEvent e)
+        {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER)
+            {
                 sendCommand();
             }
         }
     }
-    
-    private void sendCommand() {
+
+    private void sendCommand()
+    {
         console.append(NetProtocol.sendPlainRcon(command.getText()) + "\n");
     }
 }

@@ -4,65 +4,68 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-
 public final class Config
 {
-	//constants
-	public static final int DEFAULT_PORT = 21300;
+    //constants
 
-	// server variables
-	private static int serverPort;
-	private static String serverHost;
-	private static String mapImages;
+    public static final int DEFAULT_PORT = 21300;
 
-	private static String configFile;
+    // server variables
+    private static int serverPort;
+    private static String serverHost;
+    private static String mapImages;
 
-	// logging variables
-	private static Logger logger = Logger.getLogger(Config.class.getName());
+    private static String configFile;
 
-	public static void init(String fileName) throws IOException, ConfigurationException
-	{
-		configFile = fileName;
-		Properties props = new Properties();
-		InputStream is = Config.class.getResourceAsStream(configFile);
+    // logging variables
+    private static Logger logger = Logger.getLogger(Config.class.getName());
 
-		props.load(is);
+    public static void init(String fileName) throws IOException, ConfigurationException
+    {
+        configFile = fileName;
+        Properties props = new Properties();
+        InputStream is = Config.class.getResourceAsStream(configFile);
 
-		serverHost = props.getProperty("hostname");
-		mapImages = props.getProperty("map_images");
+        props.load(is);
 
-		checkValues();
-		is.close();
-	}
+        serverHost = props.getProperty("hostname");
+        mapImages = props.getProperty("map_images");
 
-	// some settings can be blank, and we can assign defaults
-	// others we absolutely need (ex serverHost, dbHost)
-	private static void checkValues() throws ConfigurationException
-	{
-		String message = " configuration property is required. Shutting down program...";
-		/* REQUIRED settings for the app */
-		if (serverHost == null || serverHost.equals(""))
-			throw new ConfigurationException("hostname" + message);
+        checkValues();
+        is.close();
+    }
 
-		if (mapImages == null || mapImages.equals(""))
-			mapImages = "resources/images/";
+    // some settings can be blank, and we can assign defaults
+    // others we absolutely need (ex serverHost, dbHost)
+    private static void checkValues() throws ConfigurationException
+    {
+        String message = " configuration property is required. Shutting down program...";
+        /* REQUIRED settings for the app */
+        if (serverHost == null || serverHost.equals(""))
+        {
+            throw new ConfigurationException("hostname" + message);
+        }
 
-	}
+        if (mapImages == null || mapImages.equals(""))
+        {
+            mapImages = "resources/images/";
+        }
 
+    }
 
-	public static String getServerHost()
-	{
-		return serverHost;
-	}
+    public static String getServerHost()
+    {
+        return serverHost;
+    }
 
-	public static int getServerPort()
-	{
-		return serverPort;
-	}
+    public static int getServerPort()
+    {
+        return serverPort;
+    }
 
-	public static String getMaps()
-	{
-		return mapImages;
-	}
+    public static String getMaps()
+    {
+        return mapImages;
+    }
 
 }

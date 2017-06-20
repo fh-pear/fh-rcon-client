@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,7 +6,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 
-public class TempBanWindow {
+public class TempBanWindow
+{
 
     private JFrame frame;
     private Client c;
@@ -21,7 +21,8 @@ public class TempBanWindow {
 
     private Logger logger = Logger.getLogger(TempBanWindow.class.getName());
 
-    public TempBanWindow(Client cl) {
+    public TempBanWindow(Client cl)
+    {
         c = cl;
 
         frame = new JFrame("TempBan Client: " + c.getName());
@@ -37,7 +38,8 @@ public class TempBanWindow {
         frame.setVisible(true);
     }
 
-    public void init() {
+    public void init()
+    {
         main = new JPanel();
         main.setLayout(new BorderLayout(5, 5));
         labels = new JPanel();
@@ -74,7 +76,10 @@ public class TempBanWindow {
         durationField = new JTextField(10);
         durationField.setText("30");
 
-        String[] array = {"Seconds", "Minutes", "Hours", "Days", "Weeks", "Years"};
+        String[] array =
+        {
+            "Seconds", "Minutes", "Hours", "Days", "Weeks", "Years"
+        };
         durationUnit = new JComboBox<String>(array);
         durationUnit.setSelectedItem("Minutes");
         selectionPanel = new JPanel();
@@ -103,74 +108,108 @@ public class TempBanWindow {
         buttonPanel.add(buttons);
     }
 
-    public void addListeners() {
+    public void addListeners()
+    {
         kick.addActionListener(new TempBanListener());
         cancel.addActionListener(new TempBanListener());
         durationField.addKeyListener(new TempBanListener());
         durationUnit.addActionListener(new TempBanListener());
     }
 
-    private class TempBanListener extends KeyAdapter implements ActionListener {
+    private class TempBanListener extends KeyAdapter implements ActionListener
+    {
 
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == kick) {
+        public void actionPerformed(ActionEvent e)
+        {
+            if (e.getSource() == kick)
+            {
 
-                if (reasonField.getText().length() < 2) {
+                if (reasonField.getText().length() < 2)
+                {
                     JOptionPane.showMessageDialog(null, "You must supply a reason!", "ERROR: No Reason", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    try {
+                }
+                else
+                {
+                    try
+                    {
                         long durr = Long.parseLong(durationField.getText());
                         String seconds = "0";
                         String minutes = "0";
-                        
-                        if (durationUnit.getSelectedItem().equals("Years")) {
+
+                        if (durationUnit.getSelectedItem().equals("Years"))
+                        {
                             seconds = String.valueOf(Function.yearsToSeconds(durr));
                             minutes = String.valueOf(Function.yearsToMinutes(durr));
-                        } else if (durationUnit.getSelectedItem().equals("Minutes")) {
+                        }
+                        else if (durationUnit.getSelectedItem().equals("Minutes"))
+                        {
                             seconds = String.valueOf(Function.minutesToSeconds(durr));
                             minutes = String.valueOf(durr);
-                        } else if (durationUnit.getSelectedItem().equals("Hours")) {
+                        }
+                        else if (durationUnit.getSelectedItem().equals("Hours"))
+                        {
                             seconds = String.valueOf(Function.hoursToSeconds(durr));
                             minutes = String.valueOf(Function.hoursToMinutes(durr));
-                        } else if (durationUnit.getSelectedItem().equals("Days")) {
+                        }
+                        else if (durationUnit.getSelectedItem().equals("Days"))
+                        {
                             seconds = String.valueOf(Function.daysToSeconds(durr));
                             minutes = String.valueOf(Function.daysToMinutes(durr));
-                        } else if (durationUnit.getSelectedItem().equals("Weeks")) {
+                        }
+                        else if (durationUnit.getSelectedItem().equals("Weeks"))
+                        {
                             seconds = String.valueOf(Function.weeksToSeconds(durr));
                             minutes = String.valueOf(Function.weeksToMinutes(durr));
-                        } else {
+                        }
+                        else
+                        {
                             seconds = String.valueOf(durr);
                             minutes = String.valueOf(Function.secondsToMinutes(durr));
                         }
-                        
+
                         String send = NetProtocol.tempBan(c.getClientId(), c.getShortGuid(),
                                 minutes, reasonField.getText(), seconds);
 
                         JOptionPane.showMessageDialog(null, send, "Tempban Results", JOptionPane.INFORMATION_MESSAGE);
-                    } catch (NumberFormatException err) {
+                    }
+                    catch (NumberFormatException err)
+                    {
                         JOptionPane.showMessageDialog(null,
                                 "Your duration input must be a number!", "Duration Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
 
-            if (e.getSource() == cancel) {
+            if (e.getSource() == cancel)
+            {
                 frame.dispose();
                 System.gc();
             }
 
-            if (e.getSource() == durationUnit) {
-                if (durationUnit.getSelectedItem().equals("Seconds")) {
+            if (e.getSource() == durationUnit)
+            {
+                if (durationUnit.getSelectedItem().equals("Seconds"))
+                {
                     durationLength = 10;
-                } else if (durationUnit.getSelectedItem().equals("Minutes")) {
+                }
+                else if (durationUnit.getSelectedItem().equals("Minutes"))
+                {
                     durationLength = 8;
-                } else if (durationUnit.getSelectedItem().equals("Hours")) {
+                }
+                else if (durationUnit.getSelectedItem().equals("Hours"))
+                {
                     durationLength = 6;
-                } else if (durationUnit.getSelectedItem().equals("Days")) {
+                }
+                else if (durationUnit.getSelectedItem().equals("Days"))
+                {
                     durationLength = 5;
-                } else if (durationUnit.getSelectedItem().equals("Weeks")) {
+                }
+                else if (durationUnit.getSelectedItem().equals("Weeks"))
+                {
                     durationLength = 4;
-                } else {
+                }
+                else
+                {
                     durationLength = 2;
                 }
 
@@ -179,7 +218,8 @@ public class TempBanWindow {
             }
         }
 
-        public void keyTyped(KeyEvent e) {
+        public void keyTyped(KeyEvent e)
+        {
             if (durationField.getText().length() >= durationLength) // limit textfield to 8 characters
             {
                 e.consume();

@@ -8,56 +8,57 @@ import java.util.logging.Logger;
 
 public class ForgottenHeroesRconClient
 {
-	private static final Logger logger = Logger.getLogger(ForgottenHeroesRconClient.class.getName());
 
-	public static void main(String[] args)
-	{
-		try (InputStream in = ForgottenHeroesRconClient.class.getResourceAsStream("resources/config/logging.properties"))
-		{
-			LogManager.getLogManager().readConfiguration(in);
-		} catch (IOException ex)
-		{
-			logger.log(Level.SEVERE, null, ex);
-		}
+    private static final Logger logger = Logger.getLogger(ForgottenHeroesRconClient.class.getName());
 
-		try
-		{
-			Config.init("/resources/config/config.properties");
-		} catch (ConfigurationException e)
-		{
-			logger.severe(e.getMessage());
-			System.exit(1);
-		} catch (Exception e)
-		{
-			logger.severe("Unexpected exception occurred reading the config file, could not recover.");
-			logger.log(Level.SEVERE, e.getMessage(), e);
-			System.exit(1);
-		}
+    public static void main(String[] args)
+    {
+        try (InputStream in = ForgottenHeroesRconClient.class.getResourceAsStream("resources/config/logging.properties"))
+        {
+            LogManager.getLogManager().readConfiguration(in);
+        }
+        catch (IOException ex)
+        {
+            logger.log(Level.SEVERE, null, ex);
+        }
 
-		//load icons
-		IconLoader.init();
-		if (System.getProperty("os.name").startsWith("Mac"))
-		{
-			System.setProperty("apple.laf.useScreenMenuBar", "true");
-			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Forgotten Heroes RCon");
-		}
+        try
+        {
+            Config.init("/resources/config/config.properties");
+        }
+        catch (ConfigurationException e)
+        {
+            logger.severe(e.getMessage());
+            System.exit(1);
+        }
+        catch (Exception e)
+        {
+            logger.severe("Unexpected exception occurred reading the config file, could not recover.");
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            System.exit(1);
+        }
 
-		//System.setProperty("java.util.logging.SimpleFormatter.format", Config.getLoggingFormat());
+        //load icons
+        IconLoader.init();
+        if (System.getProperty("os.name").startsWith("Mac"))
+        {
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Forgotten Heroes RCon");
+        }
 
-		logger.log(Level.INFO, "test message");
+        //System.setProperty("java.util.logging.SimpleFormatter.format", Config.getLoggingFormat());
+        logger.log(Level.INFO, "test message");
 
-		//NetProtocol.init(1);
-		SwingUtilities.invokeLater(
-				new Runnable()
-				{  //Note 1
-					public void run()
-					{
-						new LoginUI();
-					}
-				});
+        //NetProtocol.init(1);
+        SwingUtilities.invokeLater(
+                new Runnable()
+        {  //Note 1
+            public void run()
+            {
+                new LoginUI();
+            }
+        });
 
-	}
-
+    }
 
 }
-

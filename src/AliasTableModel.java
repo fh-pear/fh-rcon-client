@@ -4,113 +4,114 @@ import java.util.List;
 
 public class AliasTableModel extends AbstractTableModel
 {
-	private String[] columnNames =
-			{
-					"Alias",
-					"First Used On",
-					"Last Used On",
-			};
 
-	private List<Alias> aliases;
+    private String[] columnNames =
+    {
+        "Alias",
+        "First Used On",
+        "Last Used On",
+    };
 
-	public AliasTableModel()
-	{
-		aliases = new ArrayList<Alias>();
-	}
+    private List<Alias> aliases;
 
-	public AliasTableModel(List<Alias> aliases)
-	{
-		this.aliases = aliases;
-	}
+    public AliasTableModel()
+    {
+        aliases = new ArrayList<Alias>();
+    }
 
-	@Override
-	public int getColumnCount()
-	{
-		return columnNames.length;
-	}
+    public AliasTableModel(List<Alias> aliases)
+    {
+        this.aliases = aliases;
+    }
 
-	@Override
-	public String getColumnName(int column)
-	{
-		return columnNames[column];
-	}
+    @Override
+    public int getColumnCount()
+    {
+        return columnNames.length;
+    }
 
-	@Override
-	public int getRowCount()
-	{
-		return aliases.size();
-	}
+    @Override
+    public String getColumnName(int column)
+    {
+        return columnNames[column];
+    }
 
-	@Override
-	public Class getColumnClass(int column)
-	{
-		return String.class;
-	}
+    @Override
+    public int getRowCount()
+    {
+        return aliases.size();
+    }
 
-	@Override
-	public boolean isCellEditable(int row, int column)
-	{
-		return false;
-	}
+    @Override
+    public Class getColumnClass(int column)
+    {
+        return String.class;
+    }
 
-	@Override
-	public Object getValueAt(int row, int column)
-	{
-		Alias alias = getAlias(row);
+    @Override
+    public boolean isCellEditable(int row, int column)
+    {
+        return false;
+    }
 
-		switch (column)
-		{
-			case 0:
-				return alias.getAlias();
-			case 1:
-				return alias.getFirstUsed();
-			case 2:
-				return alias.getLastUsed();
-			default:
-				return null;
-		}
-	}
+    @Override
+    public Object getValueAt(int row, int column)
+    {
+        Alias alias = getAlias(row);
 
-	@Override
-	public void setValueAt(Object value, int row, int column)
-	{
-		Alias alias = getAlias(row);
+        switch (column)
+        {
+            case 0:
+                return alias.getAlias();
+            case 1:
+                return alias.getFirstUsed();
+            case 2:
+                return alias.getLastUsed();
+            default:
+                return null;
+        }
+    }
 
-		switch (column)
-		{
-			case 0:
-				alias.setAlias((String) value);
-				break;
-			case 1:
-				alias.setFirstUsed((String) value);
-				break;
-			case 2:
-				alias.setLastUsed((String) value);
-				break;
-		}
+    @Override
+    public void setValueAt(Object value, int row, int column)
+    {
+        Alias alias = getAlias(row);
 
-		fireTableCellUpdated(row, column);
-	}
+        switch (column)
+        {
+            case 0:
+                alias.setAlias((String) value);
+                break;
+            case 1:
+                alias.setFirstUsed((String) value);
+                break;
+            case 2:
+                alias.setLastUsed((String) value);
+                break;
+        }
 
-	public Alias getAlias(int row)
-	{
-		return aliases.get(row);
-	}
+        fireTableCellUpdated(row, column);
+    }
 
-	public void addAlias(Alias alias)
-	{
-		insertAlias(getRowCount(), alias);
-	}
+    public Alias getAlias(int row)
+    {
+        return aliases.get(row);
+    }
 
-	public void insertAlias(int row, Alias alias)
-	{
-		aliases.add(row, alias);
-		fireTableRowsInserted(row, row);
-	}
+    public void addAlias(Alias alias)
+    {
+        insertAlias(getRowCount(), alias);
+    }
 
-	public void removeAlias(int row)
-	{
-		aliases.remove(row);
-		fireTableRowsDeleted(row, row);
-	}
+    public void insertAlias(int row, Alias alias)
+    {
+        aliases.add(row, alias);
+        fireTableRowsInserted(row, row);
+    }
+
+    public void removeAlias(int row)
+    {
+        aliases.remove(row);
+        fireTableRowsDeleted(row, row);
+    }
 }

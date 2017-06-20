@@ -4,119 +4,122 @@ import java.util.List;
 
 public class PenaltyTableModel extends AbstractTableModel
 {
-	private String[] columnNames =
-			{
-					"Type",
-					"Reason",
-					"Expires",
-					"Active",
-			};
 
-	private List<Penalty> penalties;
+    private String[] columnNames =
+    {
+        "Type",
+        "Reason",
+        "Expires",
+        "Active",
+    };
 
-	public PenaltyTableModel()
-	{
-		penalties = new ArrayList<Penalty>();
-	}
+    private List<Penalty> penalties;
 
-	public PenaltyTableModel(List<Penalty> penalties)
-	{
-		this.penalties = penalties;
-	}
+    public PenaltyTableModel()
+    {
+        penalties = new ArrayList<Penalty>();
+    }
 
-	@Override
-	public int getColumnCount()
-	{
-		return columnNames.length;
-	}
+    public PenaltyTableModel(List<Penalty> penalties)
+    {
+        this.penalties = penalties;
+    }
 
-	@Override
-	public String getColumnName(int column)
-	{
-		return columnNames[column];
-	}
+    @Override
+    public int getColumnCount()
+    {
+        return columnNames.length;
+    }
 
-	@Override
-	public int getRowCount()
-	{
-		return penalties.size();
-	}
+    @Override
+    public String getColumnName(int column)
+    {
+        return columnNames[column];
+    }
 
-	@Override
-	public Class getColumnClass(int column)
-	{
-		if (column == 3)
-			return Boolean.class;
+    @Override
+    public int getRowCount()
+    {
+        return penalties.size();
+    }
 
-		return String.class;
-	}
+    @Override
+    public Class getColumnClass(int column)
+    {
+        if (column == 3)
+        {
+            return Boolean.class;
+        }
 
-	@Override
-	public boolean isCellEditable(int row, int column)
-	{
-		return false;
-	}
+        return String.class;
+    }
 
-	@Override
-	public Object getValueAt(int row, int column)
-	{
-		Penalty penalty = getPenalty(row);
+    @Override
+    public boolean isCellEditable(int row, int column)
+    {
+        return false;
+    }
 
-		switch (column)
-		{
-			case 0:
-				return penalty.getPenaltyType();
-			case 1:
-				return penalty.getReason();
-			case 2:
-				return penalty.getTimeExpire();
-			case 3:
-				return penalty.isActive();
-			default:
-				return null;
-		}
-	}
+    @Override
+    public Object getValueAt(int row, int column)
+    {
+        Penalty penalty = getPenalty(row);
 
-	@Override
-	public void setValueAt(Object value, int row, int column)
-	{
-		Penalty penalty = getPenalty(row);
+        switch (column)
+        {
+            case 0:
+                return penalty.getPenaltyType();
+            case 1:
+                return penalty.getReason();
+            case 2:
+                return penalty.getTimeExpire();
+            case 3:
+                return penalty.isActive();
+            default:
+                return null;
+        }
+    }
 
-		switch (column)
-		{
-			case 0:
-				penalty.setPenaltyType((String) value);
-				break;
-			case 1:
-				penalty.setReason((String) value);
-				break;
-			case 2:
-				penalty.setTimeExpire((String) value);
-				break;
-		}
+    @Override
+    public void setValueAt(Object value, int row, int column)
+    {
+        Penalty penalty = getPenalty(row);
 
-		fireTableCellUpdated(row, column);
-	}
+        switch (column)
+        {
+            case 0:
+                penalty.setPenaltyType((String) value);
+                break;
+            case 1:
+                penalty.setReason((String) value);
+                break;
+            case 2:
+                penalty.setTimeExpire((String) value);
+                break;
+        }
 
-	public Penalty getPenalty(int row)
-	{
-		return penalties.get(row);
-	}
+        fireTableCellUpdated(row, column);
+    }
 
-	public void addPenalty(Penalty penalty)
-	{
-		insertPenalty(getRowCount(), penalty);
-	}
+    public Penalty getPenalty(int row)
+    {
+        return penalties.get(row);
+    }
 
-	public void insertPenalty(int row, Penalty penalty)
-	{
-		penalties.add(row, penalty);
-		fireTableRowsInserted(row, row);
-	}
+    public void addPenalty(Penalty penalty)
+    {
+        insertPenalty(getRowCount(), penalty);
+    }
 
-	public void removePenalty(int row)
-	{
-		penalties.remove(row);
-		fireTableRowsDeleted(row, row);
-	}
+    public void insertPenalty(int row, Penalty penalty)
+    {
+        penalties.add(row, penalty);
+        fireTableRowsInserted(row, row);
+    }
+
+    public void removePenalty(int row)
+    {
+        penalties.remove(row);
+        fireTableRowsDeleted(row, row);
+    }
 }

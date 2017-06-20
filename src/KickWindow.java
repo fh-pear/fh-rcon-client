@@ -9,117 +9,119 @@ import java.util.logging.Logger;
 
 public class KickWindow
 {
-	private JFrame frame;
-	private Client c;
-	private JLabel name, guidLabel, reason;
-	private JTextField nameField, guidField, reasonField;
-	private JButton kick, cancel;
-	private JPanel main, labels, input, buttons, buttonPanel;
 
-	private Logger logger = Logger.getLogger(KickWindow.class.getName());
+    private JFrame frame;
+    private Client c;
+    private JLabel name, guidLabel, reason;
+    private JTextField nameField, guidField, reasonField;
+    private JButton kick, cancel;
+    private JPanel main, labels, input, buttons, buttonPanel;
 
-	public KickWindow(Client cl)
-	{
-		c = cl;
+    private Logger logger = Logger.getLogger(KickWindow.class.getName());
 
-		frame = new JFrame("Kick Client: " + c.getName());
-		frame.setIconImages(IconLoader.getList());
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    public KickWindow(Client cl)
+    {
+        c = cl;
 
-		init();
-		addListeners();
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
+        frame = new JFrame("Kick Client: " + c.getName());
+        frame.setIconImages(IconLoader.getList());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-		frame.setVisible(true);
-	}
+        init();
+        addListeners();
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
 
-	public void init()
-	{
-		main = new JPanel();
-		main.setLayout(new BorderLayout(5, 5));
-		labels = new JPanel();
-		GridLayout grid = new GridLayout(4, 1);
-		labels.setLayout(grid);
-		input = new JPanel();
-		input.setLayout(grid);
-		buttons = new JPanel();
-		buttonPanel = new JPanel();
-		frame.add(main);
-		main.add(labels, BorderLayout.WEST);
-		main.add(input, BorderLayout.CENTER);
-		main.add(buttonPanel, BorderLayout.SOUTH);
+        frame.setVisible(true);
+    }
 
-		name = new JLabel("Name: ");
+    public void init()
+    {
+        main = new JPanel();
+        main.setLayout(new BorderLayout(5, 5));
+        labels = new JPanel();
+        GridLayout grid = new GridLayout(4, 1);
+        labels.setLayout(grid);
+        input = new JPanel();
+        input.setLayout(grid);
+        buttons = new JPanel();
+        buttonPanel = new JPanel();
+        frame.add(main);
+        main.add(labels, BorderLayout.WEST);
+        main.add(input, BorderLayout.CENTER);
+        main.add(buttonPanel, BorderLayout.SOUTH);
 
-		nameField = new JTextField(c.getName());
-		nameField.setBorder(null);
-		nameField.setBackground(null);
-		nameField.setEditable(false);
+        name = new JLabel("Name: ");
 
-		guidLabel = new JLabel("GUID: ");
-		guidField = new JTextField(c.getGuid());
-		guidField.setBorder(null);
-		guidField.setBackground(null);
-		guidField.setEditable(false);
+        nameField = new JTextField(c.getName());
+        nameField.setBorder(null);
+        nameField.setBackground(null);
+        nameField.setEditable(false);
 
-		reason = new JLabel("Reason: ");
-		reasonField = new JTextField(20);
+        guidLabel = new JLabel("GUID: ");
+        guidField = new JTextField(c.getGuid());
+        guidField.setBorder(null);
+        guidField.setBackground(null);
+        guidField.setEditable(false);
 
-		kick = new JButton("Kick");
-		kick.setMnemonic(KeyEvent.VK_K);
+        reason = new JLabel("Reason: ");
+        reasonField = new JTextField(20);
 
-		cancel = new JButton("Cancel");
-		cancel.setMnemonic(KeyEvent.VK_C);
+        kick = new JButton("Kick");
+        kick.setMnemonic(KeyEvent.VK_K);
 
+        cancel = new JButton("Cancel");
+        cancel.setMnemonic(KeyEvent.VK_C);
 
-		labels.add(name);
-		labels.add(guidLabel);
-		labels.add(new JLabel());
-		labels.add(reason);
+        labels.add(name);
+        labels.add(guidLabel);
+        labels.add(new JLabel());
+        labels.add(reason);
 
-		input.add(nameField);
-		input.add(guidField);
-		input.add(new JLabel());
-		input.add(reasonField);
+        input.add(nameField);
+        input.add(guidField);
+        input.add(new JLabel());
+        input.add(reasonField);
 
-		buttons.setLayout(new GridLayout(1, 2, 5, 5));
-		buttons.add(kick);
-		buttons.add(cancel);
-		buttonPanel.add(buttons);
-	}
+        buttons.setLayout(new GridLayout(1, 2, 5, 5));
+        buttons.add(kick);
+        buttons.add(cancel);
+        buttonPanel.add(buttons);
+    }
 
-	public void addListeners()
-	{
-		kick.addActionListener(new KickListener());
-		cancel.addActionListener(new KickListener());
-	}
+    public void addListeners()
+    {
+        kick.addActionListener(new KickListener());
+        cancel.addActionListener(new KickListener());
+    }
 
-	private class KickListener implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e)
-		{
-			if (e.getSource() == kick)
-			{
+    private class KickListener implements ActionListener
+    {
 
-				if (reasonField.getText().length() < 2)
-				{
-					logger.log(Level.INFO, "Attempt to kick " + c.getName() + ":" + c.getShortGuid() + " without a reason");
-					JOptionPane.showMessageDialog(null, "You must supply a reason!", "ERROR: No Reason", JOptionPane.ERROR_MESSAGE);
-				} else
-				{
-					JOptionPane.showMessageDialog(null, NetProtocol.kick(c.getClientId(), c.getShortGuid(), reasonField.getText()));
-					frame.dispose();
-					System.gc();
-				}
-			}
+        public void actionPerformed(ActionEvent e)
+        {
+            if (e.getSource() == kick)
+            {
 
-			if (e.getSource() == cancel)
-			{
-				frame.dispose();
-				System.gc();
-			}
-		}
-	}
+                if (reasonField.getText().length() < 2)
+                {
+                    logger.log(Level.INFO, "Attempt to kick " + c.getName() + ":" + c.getShortGuid() + " without a reason");
+                    JOptionPane.showMessageDialog(null, "You must supply a reason!", "ERROR: No Reason", JOptionPane.ERROR_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, NetProtocol.kick(c.getClientId(), c.getShortGuid(), reasonField.getText()));
+                    frame.dispose();
+                    System.gc();
+                }
+            }
+
+            if (e.getSource() == cancel)
+            {
+                frame.dispose();
+                System.gc();
+            }
+        }
+    }
 }
