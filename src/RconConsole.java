@@ -24,6 +24,7 @@ public class RconConsole
     public RconConsole()
     {
         frame = new JFrame("RCon Console");
+        frame.setIconImages(IconLoader.getList());
 
         init();
 
