@@ -134,7 +134,7 @@ public final class NetProtocol
     public static void getGroupsFromServer()
     {
         String[] results = send("getb3groups").split("\n");
-        groups = new ArrayList(20);
+        groups = new ArrayList<>(20);
 
         for (int i = 0; i < results.length; i++)
         {
