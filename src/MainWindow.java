@@ -32,6 +32,7 @@ public class MainWindow
     private BufferedImage map;
     private JLabel mapLabel, currentMap;
     private InputStream mapFile;
+    private ImageJPanel mapImagePanel;
 
     private Logger logger = Logger.getLogger(MainWindow.class.getName());
 
@@ -54,8 +55,9 @@ public class MainWindow
 
     public void init()
     {
-        mapLabel = new JLabel();
+        //mapLabel = new JLabel();
         mapPanel = new JPanel();
+        mapImagePanel = new ImageJPanel();
         serverInfo = new JPanel();
         serverInfo.setLayout(new GridLayout(1, 1));
         mapPanel.setLayout(new BorderLayout());
@@ -193,7 +195,7 @@ public class MainWindow
         east2.setLayout(new GridLayout(1, 2));
         currentMap = new JLabel();
 
-        mapPanel.add(mapLabel, BorderLayout.CENTER);
+        mapPanel.add(mapImagePanel, BorderLayout.CENTER);
         JTextArea jta = new JTextArea(Function.formatServerInfo(NetProtocol.getServerInfo()));
         jta.setFont(new Font(Font.MONOSPACED, Font.PLAIN, jta.getFont().getSize() - 3));
         jta.setEditable(false);
@@ -224,7 +226,9 @@ public class MainWindow
             mapFile = Config.class.getResourceAsStream(fileLocation);
             map = ImageIO.read(mapFile);
 
-            mapLabel.setIcon(new ImageIcon(map.getScaledInstance(175, 150, Image.SCALE_SMOOTH)));
+            //mapLabel.setIcon(new ImageIcon(map.getScaledInstance(175, 150, Image.SCALE_SMOOTH)));
+            mapImagePanel.addImage(map);
+            //mapImagePanel.setPreferredSize(new Dimension(175, 150));
         }
         catch (IOException e)
         {
