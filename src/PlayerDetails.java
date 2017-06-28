@@ -264,7 +264,7 @@ public class PlayerDetails
         table.setShowHorizontalLines(true);
         //table.setShowVerticalLines(true);
         table.setGridColor(Color.BLACK);
-        //table.setPreferredScrollableViewportSize(new Dimension(520, 150));// centerPanel.getPreferredSize());
+        table.setPreferredScrollableViewportSize(new Dimension(520, 150));// centerPanel.getPreferredSize());
         table.setFillsViewportHeight(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -328,7 +328,7 @@ public class PlayerDetails
         table.setShowHorizontalLines(true);
         //table.setShowVerticalLines(true);
         table.setGridColor(Color.BLACK);
-        //table.setPreferredScrollableViewportSize(new Dimension(520, 150));// centerPanel.getPreferredSize());
+        table.setPreferredScrollableViewportSize(new Dimension(520, 150));// centerPanel.getPreferredSize());
         table.setFillsViewportHeight(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);

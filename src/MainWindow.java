@@ -167,21 +167,21 @@ public class MainWindow
         eastPanel.setLayout(new GridLayout(3, 1));
         east1 = new JPanel();
         east1.setBorder(BorderFactory.createTitledBorder("Tasks"));
-        east1.setLayout(new GridLayout(4, 1));
+        east1.setLayout(new GridLayout(4, 1, 8, 8));
         east2 = new JPanel();
         east2.setBorder(BorderFactory.createTitledBorder("Server Info: " + NetProtocol.getServerName()));
         east2.setLayout(new GridLayout(4, 1));
         east3 = new JPanel();
         east3.setBorder(BorderFactory.createTitledBorder("Penalties"));
-        east3.setLayout(new GridLayout(4, 1));
+        east3.setLayout(new GridLayout(4, 1, 8, 8));
 
         mapButtons = new JPanel();
-        mapButtons.setLayout(new GridLayout(1, 2));
+        mapButtons.setLayout(new GridLayout(1, 2, 8, 8));
         mapButtons.add(mapRotate);
         mapButtons.add(mapButton);
 
         messages = new JPanel();
-        messages.setLayout(new GridLayout(1, 2));
+        messages.setLayout(new GridLayout(1, 2, 8, 8));
         messages.add(pm);
         messages.add(globalMessage);
 
@@ -195,7 +195,7 @@ public class MainWindow
 
         mapPanel.add(mapLabel, BorderLayout.CENTER);
         JTextArea jta = new JTextArea(Function.formatServerInfo(NetProtocol.getServerInfo()));
-        jta.setFont(new Font(Font.MONOSPACED, Font.PLAIN, jta.getFont().getSize() - 4));
+        jta.setFont(new Font(Font.MONOSPACED, Font.PLAIN, jta.getFont().getSize() - 3));
         jta.setEditable(false);
         JScrollPane sp = new JScrollPane(jta);
         serverInfo.add(sp);
