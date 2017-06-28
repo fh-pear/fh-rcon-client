@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -10,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Arrays;
 
 /**
  * static service function class
@@ -244,4 +244,24 @@ public class Function
         return years * 52 * 7 * 24 * 60;
     }
 
+    /**
+     * 
+     * NOTE: This function will either disable, or enable, every component inside the container. 
+     *      Prior states of the components will not be tracked and will be overwritten.
+     * 
+     * @param container gui component with children that ALL need to be enabled or disabled
+     * @param enable boolean to enable or disable the container and it's children
+     */
+    public static void enableComponents(Container container, boolean enable)
+    {
+        Component[] components = container.getComponents();
+        for (Component component : components)
+        {
+            component.setEnabled(enable);
+            if (component instanceof Container)
+            {
+                enableComponents((Container) component, enable);
+            }
+        }
+    }
 }
