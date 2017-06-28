@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class B3Level implements Comparator<B3Level>
+public class B3Level
 {
 
     private String groupbits, name, keyword, level;
@@ -89,14 +89,18 @@ public class B3Level implements Comparator<B3Level>
         return name;
     }
 
+    public String showFields()
+    {
+        return groupbits + "::" + name + "::" + keyword + "::" + level;
+    }
+}
+
+class B3LevelComparator implements Comparator<B3Level>
+{
+
     @Override
     public int compare(B3Level l1, B3Level l2)
     {
         return l1.getbits() - l2.getbits();
-    }
-
-    public String showFields()
-    {
-        return groupbits + "::" + name + "::" + keyword + "::" + level;
     }
 }
