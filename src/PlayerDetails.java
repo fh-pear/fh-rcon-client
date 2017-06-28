@@ -3,13 +3,16 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Logger;
 
 /*
  * TODO: find/implement a way to handle when no user is present in database
  */
-
 public class PlayerDetails
 {
 
@@ -23,8 +26,9 @@ public class PlayerDetails
     private JMenuBar menu;
     private JMenuItem ban, tempban, addrcon, addclan, penaltyinfo;
     private JMenu admin, penalties;
+    private PlayerEdit peWindow;
 
-    private String databaseId;
+    private String databaseId, rawLevel;
     private Logger logger = Logger.getLogger(PlayerDetails.class.getName());
 
     public PlayerDetails(Client cl)
@@ -40,6 +44,7 @@ public class PlayerDetails
             topPanel();
             aliasPanel();
             penaltiesPanel();
+            implementListeners();
 
             frame.pack();
             frame.setLocationRelativeTo(null);
@@ -50,6 +55,15 @@ public class PlayerDetails
             JOptionPane.showMessageDialog(null,
                     "It appears there is not a database entry for " + c.getName() + " yet",
                     "No Database Record Found",
+                    JOptionPane.ERROR_MESSAGE);
+
+            frame.dispose();
+        }
+        catch (IllegalArgumentException e)
+        {
+            JOptionPane.showMessageDialog(null,
+                    c.getName() + " disconnected while retrieving data.\n" + e.getMessage(),
+                    "Client Disconnected",
                     JOptionPane.ERROR_MESSAGE);
 
             frame.dispose();
@@ -69,6 +83,7 @@ public class PlayerDetails
             topPanel();
             aliasPanel();
             penaltiesPanel();
+            implementListeners();
 
             frame.setTitle(frame.getTitle() + name.getText());
 
@@ -85,19 +100,20 @@ public class PlayerDetails
 
             frame.dispose();
         }
+
     }
 
     private void frameSetup()
     {
         frame.setIconImages(IconLoader.getList());
         frame.setLayout(new BorderLayout(5, 5));
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         menu = new JMenuBar();
         admin = new JMenu("Admin");
         menu.add(admin);
 
-        addrcon = new JMenuItem("Set b3 Level");
-        addclan = new JMenuItem("Add tagprotect");
+        addrcon = new JMenuItem("Edit b3 Profile");
         admin.add(addrcon);
 
         centerPanel = new JPanel();
@@ -107,13 +123,18 @@ public class PlayerDetails
         frame.add(centerPanel, BorderLayout.CENTER);
     }
 
-    public void init()
+    public void init() throws IllegalArgumentException
     {
 
         databaseId = new String();
         databaseId = NetProtocol.getDatabaseId(c.getClientId(), c.getShortGuid());
 
         databaseId = databaseId.trim();
+
+        if (databaseId.toLowerCase().contains("client disconnected"))
+        {
+            throw new IllegalArgumentException("Client disconnected, refresh your client list");
+        }
     }
 
     public void topPanel()
@@ -155,6 +176,7 @@ public class PlayerDetails
         namePanel.add(name);
 
         level = new JTextField(results[4] + " (" + results[5].replaceAll("\\s", "") + ")");
+        rawLevel = results[5];
         level.setEditable(false);
         level.setBorder(null);
         level.setBackground(null);
@@ -340,9 +362,10 @@ public class PlayerDetails
     private void implementListeners()
     {
         addrcon.addActionListener(new PlayerDetailsListener());
+        frame.addWindowListener(new PlayerDetailsListener());
     }
 
-    private class PlayerDetailsListener implements ActionListener
+    private class PlayerDetailsListener extends WindowAdapter implements ActionListener
     {
 
         @Override
@@ -350,9 +373,252 @@ public class PlayerDetails
         {
             if (e.getSource() == addrcon)
             {
+                peWindow = new PlayerEdit();
+            }
+        }
 
+        @Override
+        public void windowClosed(WindowEvent e)
+        {
+            if (peWindow != null)
+            {
+                peWindow.peFrame.dispose();
             }
         }
     }
 
+    /**
+     * frame with components for editing a b3client's level
+     */
+    private class PlayerEdit
+    {
+
+        protected JFrame peFrame;
+        private JPanel peMain, cPanel, wPanel, rconProfilePanel, levelPanel, buttonPanel;
+        private JLabel displayName, password, repeatPassword, b3level;
+        private JTextField displayNameEntry, passwordEntry, repeatPasswordEntry;
+        private JCheckBox newMemberCheck, removeMemberCheck, b3levelCheck, rconProfileCheck;
+        private JComboBox<B3Level> levelSelect;
+        private JButton submit, cancel;
+
+        public PlayerEdit()
+        {
+            peFrame = new JFrame("Edit Player: " + name.getText()
+                    + " (@" + dataid.getText() + ")");
+            peFrame.setIconImages(IconLoader.getList());
+            peFrame.setLayout(new GridLayout(1, 1));
+
+            peMain = new JPanel();
+            peMain.setLayout(new BorderLayout());
+            peFrame.add(peMain);
+            centerPanel();
+            westPanel();
+            southPanel();
+            this.implementListeners();
+
+            peFrame.pack();
+            peFrame.setLocationRelativeTo(null);
+            peFrame.setVisible(true);
+        }
+
+        public void centerPanel()
+        {
+            cPanel = new JPanel();
+            levelPanel = new JPanel();
+            rconProfilePanel = new JPanel();
+            cPanel.setLayout(new BoxLayout(cPanel, BoxLayout.Y_AXIS));
+            levelPanel.setLayout(new GridBagLayout());
+            peMain.add(cPanel, BorderLayout.CENTER);
+            
+            GridBagConstraints left = new GridBagConstraints();
+            left.anchor = GridBagConstraints.EAST;
+            left.weightx = 0.75;
+            left.fill = GridBagConstraints.HORIZONTAL;
+            GridBagConstraints right = new GridBagConstraints();
+            right.weightx = 1.25;
+            right.fill = GridBagConstraints.HORIZONTAL;
+            right.gridwidth = GridBagConstraints.REMAINDER;
+
+            cPanel.add(levelPanel);
+            cPanel.add(rconProfilePanel);
+
+            levelPanel.setBorder(BorderFactory.createTitledBorder("B3 Level"));
+            levelSelect = new JComboBox<>();
+
+            ArrayList<B3Level> levels = NetProtocol.getGroups();
+            levels.sort(new B3LevelComparator());
+            for (B3Level l : levels)
+            {
+                levelSelect.addItem(l);
+            }
+
+            //set current level as selected index in combobox
+            for (int i = 0; i < levelSelect.getItemCount(); i++)
+            {
+                if (levelSelect.getItemAt(i).getLevel().equals(rawLevel))
+                {
+                    levelSelect.setSelectedIndex(i);
+                    break;
+                }
+            }
+            
+            b3level = new JLabel("Set Level: ");
+            b3level.setLabelFor(levelSelect);
+            levelPanel.add(b3level, left);
+            levelPanel.add(levelSelect, right);
+            Function.enableComponents(levelPanel, false); // default disable
+
+            rconProfilePanel.setBorder(BorderFactory.createTitledBorder("RCon Profile"));
+            rconProfilePanel.setLayout(new GridBagLayout());
+            
+
+            displayName = new JLabel("Display Name: ");
+            password = new JLabel("Password: ");
+            repeatPassword = new JLabel("Repeat Password: ");
+
+            displayNameEntry = new JTextField(20);
+            displayName.setLabelFor(displayNameEntry);
+            passwordEntry = new JTextField(20);
+            password.setLabelFor(passwordEntry);
+            repeatPasswordEntry = new JTextField(20);
+            repeatPassword.setLabelFor(repeatPasswordEntry);
+
+            rconProfilePanel.add(displayName, left);
+            rconProfilePanel.add(displayNameEntry, right);
+            rconProfilePanel.add(password, left);
+            rconProfilePanel.add(passwordEntry, right);
+            rconProfilePanel.add(repeatPassword, left);
+            rconProfilePanel.add(repeatPasswordEntry, right);
+            Function.enableComponents(rconProfilePanel, false); //default disable
+        }
+
+        public void westPanel()
+        {
+            wPanel = new JPanel();
+            peMain.add(wPanel, BorderLayout.WEST);
+            wPanel.setBorder(BorderFactory.createTitledBorder("Options"));
+            BoxLayout layout = new BoxLayout(wPanel, BoxLayout.Y_AXIS);
+            wPanel.setLayout(layout);
+            newMemberCheck = new JCheckBox("New Member");
+            newMemberCheck.setToolTipText("Select this option if adding this player as a new member. "
+                    + "This option will attempt to add them to TagProtect.");
+
+            b3levelCheck = new JCheckBox("Edit b3 Level");
+            b3levelCheck.setToolTipText("Modify user's b3 usergroup level.");
+
+            rconProfileCheck = new JCheckBox("Edit RCon Profile");
+            rconProfileCheck.setToolTipText("Create/modify user's RCon Profile. You can reset a user's password using this option.");
+
+            removeMemberCheck = new JCheckBox("Remove Member");
+            removeMemberCheck.setToolTipText("Select this option if removing this player from the clan. "
+                    + "\nThis option will remove their RCon profile and attempt to remove them from TagProtect.");
+
+            wPanel.add(newMemberCheck);
+            wPanel.add(b3levelCheck);
+            wPanel.add(rconProfileCheck);
+            wPanel.add(new JSeparator());
+            wPanel.add(removeMemberCheck);
+
+        }
+        
+        public void southPanel()
+        {
+            buttonPanel = new JPanel();
+            JPanel buttons = new JPanel();
+            buttonPanel.add(buttons);
+            buttons.setLayout(new GridLayout(1, 2, 5, 5));
+            peMain.add(buttonPanel, BorderLayout.SOUTH);
+            
+            submit = new JButton("Submit");
+            cancel = new JButton("Cancel");
+            buttons.add(submit);
+            buttons.add(cancel);
+        }
+
+        public void implementListeners()
+        {
+            newMemberCheck.addActionListener(new PlayerEditListener());
+            b3levelCheck.addActionListener(new PlayerEditListener());
+            rconProfileCheck.addActionListener(new PlayerEditListener());
+            removeMemberCheck.addActionListener(new PlayerEditListener());
+            submit.addActionListener(new PlayerEditListener());
+            cancel.addActionListener(new PlayerEditListener());
+        }
+
+        private class PlayerEditListener implements ActionListener
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (e.getSource() == newMemberCheck)
+                {
+
+                }
+
+                if (e.getSource() == b3levelCheck)
+                {
+                    if (b3levelCheck.isSelected())
+                    {
+                        Function.enableComponents(levelPanel, true);
+                    }
+                    else
+                    {
+                        Function.enableComponents(levelPanel, false);
+                    }
+                }
+
+                if (e.getSource() == rconProfileCheck)
+                {
+                    if (rconProfileCheck.isSelected())
+                    {
+                        Function.enableComponents(rconProfilePanel, true);
+                    }
+                    else
+                    {
+                        Function.enableComponents(rconProfilePanel, false);
+                    }
+                }
+
+                if (e.getSource() == removeMemberCheck)
+                {
+                    if (removeMemberCheck.isSelected())
+                    {
+                        Function.enableComponents(cPanel, false);
+                        Function.enableComponents(wPanel, false);
+                        removeMemberCheck.setEnabled(true);
+                    }
+                    else
+                    {
+                        Function.enableComponents(cPanel, true);
+                        Function.enableComponents(wPanel, true);
+                        checkComponents();
+                    }
+                    
+                }
+            }
+
+            public void checkComponents()
+            {
+                if (b3levelCheck.isSelected())
+                {
+                    Function.enableComponents(levelPanel, true);
+                }
+                else
+                {
+                    Function.enableComponents(levelPanel, false);
+                }
+
+                if (rconProfileCheck.isSelected())
+                {
+                    Function.enableComponents(rconProfilePanel, true);
+                }
+                else
+                {
+                    Function.enableComponents(rconProfilePanel, false);
+                }
+
+            }
+        }
+    }
 }
